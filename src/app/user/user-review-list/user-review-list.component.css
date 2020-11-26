@@ -1,0 +1,37 @@
+.star {
+  font-size: 2rem;
+  color: white;
+}
+.filled {
+  color: gold;
+}
+
+:focus {
+  outline: transparent thin dotted !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgb(121, 208, 198);
+}
+
+/*tr:nth-of-type(odd):hover :not th{*/
+/*  text-shadow:0px 0px 1px black;*/
+/*}*/
+
+/*th {*/
+/*  font-weight: bolder;*/
+/*}*/
+
+tbody tr:not(th) {
+  letter-spacing: 1px;
+}
+
+tbody td:not(th) {
+  vertical-align: middle;
+  /*font-weight: bold;*/
+}
+
+tbody tr:hover:not(th) {
+  font-weight: bold;
+  letter-spacing: 0px;
+}
