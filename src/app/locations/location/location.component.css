@@ -1,0 +1,32 @@
+/*.star {*/
+/*  font-size: 5rem;*/
+/*  color: #b0c4de;*/
+/*}*/
+/*.filled {*/
+/*  color: gold;*/
+/*}*/
+
+/*:focus {*/
+/*  outline: transparent thin dotted !important;*/
+/*}*/
+
+.star1 {
+  position: relative;
+  display: inline-block;
+  font-size: 2rem;
+  color: #d3d3d3;
+}
+.full {
+  color: gold;
+}
+.half {
+  position: absolute;
+  display: inline-block;
+  overflow: hidden;
+  color: gold;
+}
+#map {
+  height: 400px;
+  width: 400px;
+}
+

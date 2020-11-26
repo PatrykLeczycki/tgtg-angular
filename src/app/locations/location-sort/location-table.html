@@ -1,0 +1,87 @@
+<form>
+  <div class="form-group form-inline">
+    Filtry: <input
+      class="form-control ml-2"
+      type="text"
+      name="searchNameTerm"
+      placeholder="Nazwa lokalu"
+      [(ngModel)]="service.searchNameTerm"/>
+    <input
+      class="form-control ml-2"
+      type="text"
+      name="searchStreetTerm"
+      placeholder="Ulica"
+      [(ngModel)]="service.searchStreetTerm"/>
+    <input
+      class="form-control ml-2"
+      type="text"
+      name="searchCityTerm"
+      placeholder="Miasto"
+      [(ngModel)]="service.searchCityTerm"/>
+    <span class="ml-3" *ngIf="service.loading$ | async">Loading...</span>
+  </div>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col" sortable="name" (sort)="onSort($event)" style="text-align: center">Nazwa lokalu</th>
+      <th scope="col" sortable="city" (sort)="onSort($event)" style="text-align: center">Miasto</th>
+      <th scope="col" sortable="street" (sort)="onSort($event)" style="text-align: center">Ulica</th>
+      <th scope="col" sortable="rating" (sort)="onSort($event)" style="text-align: center">Ocena</th>
+      <th scope="col" style="text-align: center">Akcje</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let location of locations$ | async">
+      <td style="text-align: center">
+        <ngb-highlight [result]="location.name" [term]="service.searchNameTerm"></ngb-highlight>
+      </td>
+      <td style="text-align: center">
+        <ngb-highlight [result]="location.city" [term]="service.searchCityTerm"></ngb-highlight>
+      </td>
+      <td style="text-align: center">
+        <ngb-highlight [result]="location.street" [term]="service.searchStreetTerm"></ngb-highlight>
+      </td>
+      <td style="text-align: center">
+        <ngb-highlight style="display: none" [result]="location.rating | number"></ngb-highlight>
+        <ngb-rating [rate]="location.rating" [readonly]="true" max="5">
+          <ng-template let-fill="fill">
+            <span class="star" [class.filled]="fill === 100">&#9733;</span>
+          </ng-template>
+        </ngb-rating>
+      </td>
+      <td style="text-align: center">
+        <button class="btn btn-primary" style="background-color: rgb(39, 87, 79); border-color: rgb(39, 87, 79); margin-right: 10px"
+                routerLink="/locations/{{location.id}}">
+          Szczegóły
+        </button>
+        <button
+          class="btn btn-danger"
+          style="border-color: rgb(39, 87, 79)"
+          (click)="onBlacklist(location.id)"
+          *ngIf="authService.user.value && !userBlacklistIds.includes(location.id)"
+        >
+          Na czarną listę
+        </button>
+        <button
+          class="btn btn-danger"
+          style="border-color: rgb(39, 87, 79)"
+          (click)="deleteFromBlacklist(location.id)"
+          *ngIf="authService.user.value && userBlacklistIds.includes(location.id)"
+        >
+          Usuń z czarnej listy
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-between p-2">
+    <ngb-pagination
+      [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+    </ngb-pagination>
+    <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="service.pageSize">
+      <option [ngValue]="2">2 lokale na stronę</option>
+      <option [ngValue]="4">4 lokale na stronę</option>
+      <option [ngValue]="6">6 lokali na stronę</option>
+    </select>
+  </div>
+</form>
