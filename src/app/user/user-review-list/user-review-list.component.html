@@ -1,0 +1,104 @@
+<br>
+<h1 style="text-align: center">Twoje recenzje</h1>
+<hr>
+<div class="container">
+  <div class="row">
+    <div class="col">
+    </div>
+    <div class="col-12">
+      <form>
+        <div class="form-group form-inline">
+          Filtry: <input
+          class="form-control ml-2"
+          type="text"
+          name="searchTerm"
+          placeholder="Nazwa lokalu"
+          [(ngModel)]="datatableService.searchLocationNameTerm"/>
+          <input
+            class="form-control ml-2"
+            type="text"
+            name="searchCityTerm"
+            placeholder="Miasto"
+            [(ngModel)]="datatableService.searchCityTerm"/>
+          <span class="ml-3" *ngIf="datatableService.loading$ | async">Loading...</span>
+          <!--    <span class="ml-3" *ngIf="service.loading$ | async">Loading...</span>-->
+        </div>
+        <!--  <div class="form-group form-inline">-->
+        <!--    <input-->
+        <!--      class="form-control ml-2"-->
+        <!--      type="text"-->
+        <!--      name="searchCityTerm"-->
+        <!--      placeholder="Miasto"-->
+        <!--      [(ngModel)]="service.searchCityTerm"/>-->
+        <!--    <span class="ml-3" *ngIf="service.loading$ | async">Loading...</span>-->
+        <!--  </div>-->
+
+        <table class="table table-striped" style="text-align: center">
+          <thead>
+          <tr>
+            <th scope="col" sortable="pickupTime" (sort)="onSort($event)">Data odbioru</th>
+            <th scope="col" sortable="locationName" (sort)="onSort($event)">Nazwa lokacji</th>
+            <th scope="col" sortable="locationCity" (sort)="onSort($event)">Miasto</th>
+            <th scope="col" sortable="rating" (sort)="onSort($event)">Ocena</th>
+            <th scope="col"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let review of userReviews$ | async">
+            <td>
+              <ngb-highlight [result]="transformDate(review.pickupTime)"></ngb-highlight>
+            </td>
+            <td>
+              <ngb-highlight [result]="review.locationName"
+                             [term]="datatableService.searchLocationNameTerm"></ngb-highlight>
+            </td>
+            <td>
+              <ngb-highlight [result]="review.locationCity" [term]="datatableService.searchCityTerm"></ngb-highlight>
+            </td>
+            <td>
+              <ngb-highlight style="display: none" [result]="review.rating | number"></ngb-highlight>
+              <ngb-rating [rate]="review.rating" [readonly]="true" max="5">
+                <ng-template let-fill="fill">
+                  <span class="star" [class.filled]="fill === 100">&#9733;</span>
+                </ng-template>
+              </ngb-rating>
+            </td>
+            <td>
+              <button class="btn btn-primary"
+                      style="background-color: rgb(39, 87, 79); border-color: rgb(39, 87, 79); margin-right: 10px">
+                <a
+                  style="color: white"
+                  routerLink="/reviews/{{review.id}}"
+                >Szczegóły</a></button>
+              <button
+                class="btn btn-danger"
+                style="border-color: rgb(39, 87, 79)"
+                (click)="onDelete(review.id)">
+                Usuń
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between p-2">
+          <ngb-pagination
+            [collectionSize]="(total$ | async)!" [(page)]="datatableService.page"
+            [pageSize]="datatableService.pageSize">
+          </ngb-pagination>
+
+          <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="datatableService.pageSize">
+            <option [ngValue]="2">2 recenzje na stronę</option>
+            <option [ngValue]="4">4 recenzje na stronę</option>
+            <option [ngValue]="6">6 recenzji na stronę</option>
+          </select>
+        </div>
+
+      </form>
+    </div>
+    <div class="col">
+    </div>
+  </div>
+</div>
+
+
