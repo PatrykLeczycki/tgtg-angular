@@ -1,0 +1,83 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a routerLink="/" class="navbar-brand" style="font-size: 21px">Too Good To Go</a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarContent"
+    aria-controls="navbarContent"
+    aria-expanded="false"
+    [attr.aria-expanded]="!navbarCollapsed"
+    aria-label="Toggle navigation"
+    (click)="navbarCollapsed = !navbarCollapsed">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarReviewsDropdown" role="button" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">
+          Recenzje
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarReviewsDropdown">
+          <a class="dropdown-item" routerLink="/reviews/latest">Najnowsze recenzje</a>
+          <a class="dropdown-item" routerLink="/reviews">Wszystkie recenzje</a>
+          <a class="dropdown-item" routerLink="/reviews/add">Dodaj nową recenzję</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarLocationsDropdown" role="button" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">
+          Lokale
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarLocationsDropdown">
+          <a class="dropdown-item" routerLink="/locations">Wszystkie lokacje</a>
+          <a class="dropdown-item" routerLink="/locations/add">Dodaj nową lokację</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/map">Mapa Polski</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/blacklist">Czarna lista</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav navbar-right">
+      <li
+        class="nav-item dropdown"
+        *ngIf="isAuthenticated">
+        <a
+          class="nav-link dropdown-toggle"
+          id="navbarDropdown"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false">
+          Panel użytkownika
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" routerLink="/user/reviews">Moje recenzje</a>
+          <a class="dropdown-item" routerLink="/user/blacklist">Moja czarna lista</a>
+          <!--          TODO: dodać zarządzanie użytkownikami (lista, role, usuwanie)-->
+          <!--          <a class="dropdown-item" routerLink="">Zarządzaj użytkownikami</a>-->
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" routerLink="/changePassword">Zmień hasło</a>
+        </div>
+      </li>
+      <li
+        class="nav-item"
+        style="cursor: pointer"
+        *ngIf="isAuthenticated"
+        (click)="onLogout()">
+        <a class="nav-link">Wyloguj</a>
+      </li>
+      <li
+        class="nav-item"
+        style="cursor: pointer"
+        *ngIf="!isAuthenticated">
+        <a class="nav-link" routerLink="/auth">Logowanie</a>
+      </li>
+    </ul>
+  </div>
+</nav>
