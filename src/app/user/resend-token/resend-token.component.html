@@ -1,0 +1,47 @@
+<div class="container">
+  <div class="row" style="margin-top: 15px">
+    <div class="col">
+    </div>
+    <div class="col-5">
+      <form [formGroup]="resendTokenForm" (ngSubmit)="onSubmit()" class="text-center border border-dark p-5">
+        <p class="h4 mb-4">Ponowne wysłanie linku aktywacyjnego</p>
+        <div class="alert alert-success" *ngIf="emailSent">
+          <p style="font-weight: bolder; margin: 0 auto">
+            Jeżeli adres e-mail istnieje w naszej bazie i należy do niepotwierdzonego użytkownika, na podany adres zostanie wysłany link aktywacyjny.
+          </p>
+        </div>
+        <div class="form-group">
+          <label for="email">Adres e-mail</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="form-control"
+            placeholder="Adres e-mail"
+            (blur)="onEmailCheck()"
+            [ngStyle]="{borderColor: invalidEmail && resendTokenForm.controls.email.errors?.email ? 'red' : '#ced4da'}"
+          />
+          <p *ngIf="invalidEmail && resendTokenForm.controls.email.errors?.email"
+             style="font-weight: bolder; margin: 0 auto; color: red">
+            Nieprawidłowy adres e-mail
+          </p>
+        </div>
+        <div class="d-flex justify-content-around">
+          <button
+            class="btn btn-primary pull-left"
+            type="button"
+            routerLink="/auth">
+            Powrót
+          </button>
+          <button
+            class="btn btn-primary pull-right"
+            type="submit">
+            Wyślij link
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="col">
+    </div>
+  </div>
+</div>

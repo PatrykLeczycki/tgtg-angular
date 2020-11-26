@@ -1,0 +1,113 @@
+<div class="container">
+  <div class="row" style="margin-top: 15px">
+    <div class="col">
+    </div>
+    <div class="col-5">
+      <!-- Default form login -->
+      <form [formGroup]="authForm" (ngSubmit)="onSubmit()" class="text-center border border-dark p-5">
+        <p class="h4 mb-4">{{ isLoginMode ? 'Logowanie' : 'Rejestracja' }}</p>
+        <div class="alert alert-danger" *ngIf="error">
+          <p style="font-weight: bolder; margin: 0 auto">{{error}}</p>
+        </div>
+        <div class="alert alert-danger" *ngIf="invalidConfirmationToken">
+          <p style="font-weight: bolder; margin: 0 auto">Link potwierdzający rejestrację jest uszkodzony.
+            <a routerLink="/resendToken" [queryParams]="{token:'confirmation'}">Wyślij link ponownie.</a></p>
+        </div>
+        <div class="alert alert-danger" *ngIf="invalidPassRecoveryToken">
+          <p style="font-weight: bolder; margin: 0 auto">Link do odzyskiwania hasła jest uszkodzony.
+            <a routerLink="/retrievePassword">Wygeneruj link ponownie.</a></p>
+        </div>
+        <div class="alert alert-success" *ngIf="registered">
+          <p style="font-weight: bolder; margin: 0 auto">Rejestracja zakończona powodzeniem. Prosimy o potwierdzenie
+            adresu e-mail poprzez wejście w link aktywacyjny wysłany na podany adres e-mail.</p>
+        </div>
+        <div class="alert alert-success" *ngIf="accountConfirmed">
+          <p style="font-weight: bolder; margin: 0 auto">Dziękujemy za potwierdzenie konta.</p>
+        </div>
+        <div class="alert alert-success" *ngIf="passwordRetrieved">
+          <p style="font-weight: bolder; margin: 0 auto">Odzyskiwanie hasła zakończone sukcesem.</p>
+        </div>
+        <div class="alert alert-success" *ngIf="changedPassword">
+          <p style="font-weight: bolder; margin: 0 auto">Hasło zostało zmienione. Zaloguj się do konta nowymi danymi.</p>
+        </div>
+        <!--        <div *ngIf="isLoading" style="text-align: center">-->
+        <!--          <app-loading-spinner></app-loading-spinner>-->
+        <!--        </div>-->
+        <div class="form-group">
+          <label for="email">Adres e-mail</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="form-control"
+            placeholder="Adres e-mail"
+            (blur)="onEmailCheck()"
+            [ngStyle]="{borderColor: invalidEmail && authForm.controls.email.errors?.email ? 'red' : '#ced4da'}"
+          />
+          <span
+            *ngIf="invalidEmail && authForm.get('email').hasError('email')">
+            <p class="alert alert-danger">Nieprawidłowy adres e-mail</p>
+          </span>
+        </div>
+        <div class="form-group">
+          <label for="password">{{isLoginMode ? 'Hasło' : 'Hasło (min. 8 znaków)'}}</label>
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            class="form-control"
+            placeholder="{{isLoginMode? 'Hasło' : 'Hasło (min. 8 znaków)'}}"
+          />
+          <span
+            *ngIf="!isLoginMode && authForm.get('password').dirty && authForm.get('password').hasError('minlength')">
+            <p class="alert alert-danger">Hasło jest zbyt krótkie</p>
+          </span>
+        </div>
+        <div class="form-group" *ngIf="!isLoginMode">
+          <label for="repeatPassword">Powtórz hasło</label>
+          <input
+            type="password"
+            id="repeatPassword"
+            formControlName="repeatPassword"
+            class="form-control"
+            placeholder="Powtórz hasło (min. 8 znaków)"
+          />
+          <span
+            *ngIf="authForm.get('password').dirty
+            && !authForm.get('password').hasError('minlength')
+            && authForm.get('repeatPassword').dirty
+            && authForm.get('repeatPassword').hasError('mustMatch')">
+            <p class="alert alert-danger">Hasła muszą być takie same.</p>
+          </span>
+        </div>
+        <div class="d-flex justify-content-around">
+          <div>
+            <a routerLink="/retrievePassword">Przypomnienie hasła</a>
+          </div>
+        </div>
+        <br>
+        <div class="d-flex justify-content-around">
+            <span ngbTooltip="{{authForm.invalid ? 'Wypełnij wymagane pola' : ''}}">
+              <button
+                class="btn btn-primary"
+                type="submit"
+                [disabled]="authForm.invalid">
+                {{ isLoginMode ? 'Zaloguj' : 'Zarejestruj' }}
+              </button>
+            </span>
+        </div>
+        <hr>
+        <div class="d-flex justify-content-around">
+          <button
+            class="btn btn-primary pull-right"
+            type="button"
+            (click)="onSwitchMode()">
+            {{ isLoginMode ? 'Rejestracja' : 'Logowanie' }}
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="col">
+    </div>
+  </div>
+</div>
