@@ -1,0 +1,83 @@
+<br>
+<h1 style="text-align: center; margin-top: 15px">Czarna lista</h1>
+<hr>
+<div class="container">
+  <div class="row">
+    <div class="col">
+    </div>
+    <div class="col-12">
+      <form>
+        <div class="form-group form-inline">
+          Filtry: <input
+          class="form-control ml-2"
+          type="text"
+          name="searchNameTerm"
+          placeholder="Nazwa lokalu"
+          [(ngModel)]="blacklistDatatableService.searchNameTerm"/>
+          <input
+            class="form-control ml-2"
+            type="text"
+            name="searchStreetTerm"
+            placeholder="Ulica"
+            [(ngModel)]="blacklistDatatableService.searchStreetTerm"/>
+          <input
+            class="form-control ml-2"
+            type="text"
+            name="searchCityTerm"
+            placeholder="Miasto"
+            [(ngModel)]="blacklistDatatableService.searchCityTerm"/>
+          <span class="ml-3" *ngIf="blacklistDatatableService.loading$ | async">Loading...</span>
+        </div>
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th scope="col" sortable="name" (sort)="onSort($event)" style="text-align: center">Nazwa lokalu</th>
+            <th scope="col" sortable="city" (sort)="onSort($event)" style="text-align: center">Miasto</th>
+            <th scope="col" sortable="street" (sort)="onSort($event)" style="text-align: center">Ulica</th>
+            <th scope="col" sortable="rating" (sort)="onSort($event)" style="text-align: center">Ocena</th>
+            <th scope="col" sortable="count" (sort)="onSort($event)" style="text-align: center">Wystąpienia</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let entry of entries$ | async">
+            <td style="text-align: center">
+              <ngb-highlight [result]="entry.name" [term]="blacklistDatatableService.searchNameTerm"></ngb-highlight>
+            </td>
+            <td style="text-align: center">
+              <ngb-highlight [result]="entry.city" [term]="blacklistDatatableService.searchCityTerm"></ngb-highlight>
+            </td>
+            <td style="text-align: center">
+              <ngb-highlight [result]="entry.street" [term]="blacklistDatatableService.searchStreetTerm"></ngb-highlight>
+            </td>
+            <td style="text-align: center">
+              <ngb-highlight style="display: none" [result]="entry.rating | number"></ngb-highlight>
+              <ngb-rating [rate]="entry.rating" [readonly]="true" max="5" *ngIf="entry.rating > 0">
+                <ng-template let-fill="fill">
+                  <span class="star" [class.filled]="fill === 100">&#9733;</span>
+                </ng-template>
+              </ngb-rating>
+              <span *ngIf="entry.rating === 0">brak</span>
+            </td>
+            <td style="text-align: center">
+              <ngb-highlight [result]="'' + entry.count"></ngb-highlight>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <div class="d-flex justify-content-between p-2">
+          <ngb-pagination
+            [collectionSize]="(total$ | async)!" [(page)]="blacklistDatatableService.page" [pageSize]="blacklistDatatableService.pageSize">
+          </ngb-pagination>
+          <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="blacklistDatatableService.pageSize">
+            <option [ngValue]="2">2 lokale na stronę</option>
+            <option [ngValue]="4">4 lokale na stronę</option>
+            <option [ngValue]="6">6 lokali na stronę</option>
+          </select>
+        </div>
+      </form>
+    </div>
+    <div class="col">
+    </div>
+  </div>
+</div>
+
