@@ -1,0 +1,120 @@
+<div class="container">
+  <div class="row" style="margin-top: 15px">
+    <div class="col"></div>
+    <div class="card pmd-card" style="width: 540px">
+      <div class="card-header" style="display: inline-block">
+        <div class="row">
+          <div class="col-sm">
+            <button
+              class="btn btn-primary"
+              style="float:left"
+              routerLink="/reviews">
+              Powrót
+            </button>
+          </div>
+          <div class="col-6"><h4 class="card-title" style="text-align: center">Szczegóły recenzji</h4>
+          </div>
+          <div class="col-sm">
+            <button
+              class="btn btn-primary"
+              style="float:right"
+              routerLink="/reviews/edit/{{review.id}}">
+              Edycja
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <ul class="list-group pmd-list">
+        <li class="list-group-item d-flex flex-row">
+          <i class='fas fa-home' style='font-size:24px'></i>
+          <span class="media-body">
+            <span style="font-weight: bold; margin-left: 5px">Lokal: </span>
+            {{review.location.name}}
+          </span>
+        </li>
+        <li class="list-group-item d-flex flex-row">
+          <i class="material-icons pmd-list-icon align-middle">location_on</i>
+          <span class="media-body">
+            <span style="font-weight: bold; margin-left: 5px">Adres: </span>
+            {{review.location.address.street}} {{review.location.address.buildingNo}}, {{review.location.address.city}}
+          </span>
+        </li>
+        <li class="list-group-item d-flex flex-row">
+          <i class='fas fa-clock' style='font-size:24px'></i>
+          <span class="media-body">
+            <span style="font-weight: bold; margin-left: 5px">Czas odbioru: </span>
+            godz. {{ transformDate(review.pickupTime)}}
+          </span>
+        </li>
+        <li class="list-group-item d-flex flex-row">
+          <i class='fas fa-coins' style='font-size:24px'></i>
+          <span class="media-body">
+            <span style="font-weight: bold; margin-left: 5px">Standardowa cena: </span>
+            {{review.standardPrice}} zł
+          </span>
+        </li>
+        <li class="list-group-item d-flex flex-row">
+          <i class='fas fa-coins' style='font-size:24px'></i>
+          <span class="media-body">
+            <span style="font-weight: bold; margin-left: 5px">Cena z TGTG: </span>
+            {{review.discountPrice}} zł
+          </span>
+        </li>
+        <li class="list-group-item d-flex flex-row">
+          <i class='fas fa-star' style='font-size:24px'></i>
+          <span class="media-body">
+            <span style="font-weight: bold; margin-left: 5px">Ocena:</span>
+            <br>
+            <ngb-rating [rate]="review.rating" [readonly]="true" max="5">
+              <ng-template let-fill="fill">
+                <span class="star" [class.filled]="fill === 100">&#9733;</span>
+              </ng-template>
+            </ngb-rating>
+          </span>
+        </li>
+        <li class="list-group-item d-flex flex-row" *ngIf="review.comment && review.comment !== ''">
+          <i class='fas fa-comment' style='font-size:24px'></i>
+          <span class="media-body">
+            <span style="font-weight: bold; margin-left: 5px">Komentarz: </span>
+            <br>
+            <br>
+            {{review.comment}}
+          </span>
+        </li>
+        <li class="list-group-item d-flex flex-row" *ngIf="mapHidden">
+          <a (click)="onClick()">
+            <i class="fa fa-caret-down" style="font-size:24px"></i>
+            <span class="media-body">
+            <span style="font-weight: bold; margin-left: 5px">Pokaż mapę</span>
+          </span>
+          </a>
+        </li>
+        <li class="list-group-item d-flex flex-row" *ngIf="!mapHidden" style="border-bottom-color: transparent">
+          <a (click)="onClick()">
+            <i class="fa fa-caret-up" style="font-size:24px"></i>
+            <span class="media-body">
+            <span style="font-weight: bold; margin-left: 5px">Schowaj mapę</span>
+          </span>
+          </a>
+        </li>
+        <li class="list-group-item d-flex flex-row" *ngIf="!mapHidden" (click)="onClick()">
+          <app-map  [locationData]="review.location"></app-map>
+        </li>
+        <li class="list-group-item d-flex flex-row" style="border-bottom-color: transparent" *ngIf="galleryImages.length > 0">
+          <i class="material-icons">photo_library</i>
+          <span class="media-body">
+            <span style="font-weight: bold; margin-left: 5px">Galeria</span>
+          </span>
+        </li>
+        <li class="list-group-item d-flex flex-row" *ngIf="galleryImages.length > 0">
+          <ngx-gallery [options]="galleryOptions" [images]="galleryImages">
+          </ngx-gallery>
+        </li>
+      </ul>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>
+
+

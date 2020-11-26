@@ -1,0 +1,51 @@
+<hr>
+<div class="container">
+  <div class="row">
+    <div class="col">
+    </div>
+    <div class="col-12" style="margin-top: 15px">
+      <h1 style="text-align: center">{{latestReviewsLimit}} ostatnio dodanych recenzji</h1>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th scope="col" style="text-align: center">Data odbioru</th>
+          <th scope="col" style="text-align: center">Nazwa lokacji</th>
+          <th scope="col" style="text-align: center">Miasto</th>
+          <th scope="col" style="text-align: center">Ocena</th>
+          <th scope="col" style="text-align: center" *ngIf="isAuthenticated"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let review of latestReviews">
+          <td style="text-align: center">
+            {{transformDate(review.pickupTime)}}
+          </td>
+          <td style="text-align: center">
+            {{review.location.name}}
+          </td>
+          <td style="text-align: center">
+            {{review.location.address.city}}
+          </td>
+          <td style="text-align: center">
+            <ngb-rating [rate]="review.rating" [readonly]="true" max="5">
+              <ng-template let-fill="fill">
+                <span class="star" [class.filled]="fill === 100">&#9733;</span>
+              </ng-template>
+            </ngb-rating>
+          </td>
+          <td *ngIf="isAuthenticated" style="text-align: center">
+            <button class="btn btn-primary"
+                    style="background-color: rgb(39, 87, 79);
+                    border-color: rgb(39, 87, 79)"
+                    routerLink="/reviews/{{review.id}}">
+              Szczegóły
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col">
+    </div>
+  </div>
+</div>
