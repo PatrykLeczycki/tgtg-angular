@@ -1,0 +1,466 @@
+<br>
+<div class="d-flex justify-content-around">
+  <div class="alert alert-danger" *ngIf="error">
+    <p>{{ error }}</p>
+  </div>
+
+  <div class="card pmd-card" style="width: 540px">
+
+    <!-- Card Header -->
+    <div class="card-header" style="display: inline-block; text-align: center">
+      <div class="row">
+        <div class="col-sm">
+          <button
+            class="btn btn-primary"
+            style="float:left"
+            routerLink="/reviews">
+            Powrót
+          </button>
+        </div>
+        <div class="col-6"><h4 class="card-title" style="text-align: center">Edycja recenzji</h4>
+        </div>
+        <div class="col-sm">
+        </div>
+      </div>
+    </div>
+
+    <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
+      <ul class="list-group pmd-list">
+        <div formGroupName="location">
+          <div class="form-group">
+            <li class="list-group-item d-flex flex-row">
+              <label for="name" style="width: 30%; display: flex; align-items: center">Nazwa
+                lokalu <span style="color: red">*</span></label>
+              <br>
+              <br>
+              <input
+                type="text"
+                id="name"
+                formControlName="name"
+                class="form-control"
+                [readOnly]="chooseExistingLocation"
+                style="width: 70%"
+              />
+            </li>
+          </div>
+          <div formGroupName="address">
+            <div class="form-group">
+              <li class="list-group-item d-flex flex-row">
+                <label for="street" style="width: 30%; display: flex; align-items: center">Ulica
+                  <span style="color: red">*</span></label>
+                <br>
+                <br>
+                <input
+                  type="text"
+                  id="street"
+                  formControlName="street"
+                  class="form-control"
+                  [readOnly]="chooseExistingLocation"
+                  style="width: 70%"
+                />
+              </li>
+            </div>
+            <div class="form-group">
+              <li class="list-group-item d-flex flex-row">
+                <label
+                  for="buildingNo"
+                  style="width: 30%; display: flex; align-items: center">
+                  Numer budynku
+                  <span style="color: red">*</span></label>
+                <br>
+                <br>
+                <input
+                  type="text"
+                  id="buildingNo"
+                  formControlName="buildingNo"
+                  class="form-control"
+                  [readOnly]="chooseExistingLocation"
+                  style="width: 70%"
+                />
+              </li>
+            </div>
+            <div class="form-group">
+              <li class="list-group-item d-flex flex-row">
+                <label for="city" style="width: 30%; display: flex; align-items: center">Miasto
+                  <span style="color: red">*</span></label>
+                <br>
+                <br>
+                <input
+                  type="text"
+                  id="city"
+                  formControlName="city"
+                  class="form-control"
+                  [readOnly]="chooseExistingLocation"
+                  style="width: 70%"
+                />
+              </li>
+            </div>
+          </div>
+        </div>
+        <li class="list-group-item d-flex flex-row justify-content-center"
+            [ngStyle]="{borderBottomColor: chooseExistingLocation ? 'transparent' : 'rgba(0, 0, 0, .125'}">
+          <button
+            class="btn btn-primary"
+            type="button"
+            style="border-color: rgb(121, 208, 198)"
+            (click)="onChooseExisting()">
+            {{chooseExistingLocation ? 'Wprowadź nową lokację' : 'Wybierz lokalizację z listy'}}
+          </button>
+          <!--            <select-->
+          <!--              name="locations"-->
+          <!--              id="locations"-->
+          <!--              class="mdb-select md-form" searchable="Search here.."-->
+          <!--              data-style="btn-primary"-->
+          <!--              data-live-search="true"-->
+          <!--              style="margin-left: 20px; width: 40%"-->
+          <!--              [(ngModel)]="chosenLocationId"-->
+          <!--              [ngModelOptions]="{standalone: true}"-->
+          <!--              (change)="onLocationChoose()"-->
+          <!--              *ngIf="chooseExistingLocation">-->
+          <!--              <option-->
+          <!--                [ngValue]="location.id"-->
+          <!--                *ngFor="let location of locations">-->
+          <!--                {{ location.name }}-->
+          <!--              </option>-->
+          <!--            </select>-->
+        </li>
+        <li
+          class="list-group-item d-flex flex-row justify-content-center"
+          style="border-bottom-color: transparent"
+          *ngIf="chooseExistingLocation"
+        >
+          <p>Wybierz lokal z listy bądź wyszukaj go, wpisując nazwę i adres</p>
+        </li>
+        <li
+          class="list-group-item d-flex flex-row justify-content-center"
+          *ngIf="chooseExistingLocation">
+          <ng-select [items]="locations$ | async"
+                     bindLabel="fullName"
+                     autofocus
+                     bindValue="id"
+                     [(ngModel)]="chosenLocationId"
+                     [ngModelOptions]="{standalone: true}"
+                     *ngIf="chooseExistingLocation"
+                     [clearable]="false"
+                     (change)="onLocationChoose()">
+          </ng-select>
+        </li>
+        <h3 style="text-align: center; margin: 15px">Informacje o paczce</h3>
+
+        <div class="form-group">
+          <li class="list-group-item d-flex flex-row">
+            <label for="standardPrice" style="width: 30%; display: flex; align-items: center">Standardowa
+              cena <span style="color: red">*</span></label>
+            <br>
+            <br>
+            <input
+              type="number"
+              id="standardPrice"
+              formControlName="standardPrice"
+              class="form-control"
+              style="width: 20%"
+            />
+            <label for="discountPrice"
+                   style="width: 30%; display: flex; align-items: center; padding-left: 20px">Cena
+              w TGTG <span style="color: red">*</span></label>
+            <br>
+            <br>
+            <input
+              type="number"
+              id="discountPrice"
+              formControlName="discountPrice"
+              class="form-control"
+              style="width: 20%"
+            />
+          </li>
+        </div>
+        <div class="form-group">
+          <li class="list-group-item d-flex flex-row">
+            <label for="pickupTime" style="width: 30%; display: flex; align-items: center">Czas
+              odbioru <span style="color: red">*</span></label>
+            <input
+              type="datetime-local"
+              id="pickupTime"
+              formControlName="pickupTime"
+              class="form-control"
+              style="width: 70%"
+            />
+          </li>
+        </div>
+        <div class="form-group">
+          <li class="list-group-item d-flex flex-row">
+            <label for="comment" style="width: 30%">Komentarz (opcjonalnie)</label>
+            <textarea
+              type="are"
+              id="comment"
+              formControlName="comment"
+              class="form-control"
+              style="width: 70%"
+            ></textarea>
+          </li>
+        </div>
+        <h4 style="text-align: center; margin-top: 15px">Ocena <span style="color: red">*</span></h4>
+        <li class="list-group-item d-flex flex-row justify-content-center" style="border-top-color: transparent">
+          <div class="row">
+            <div class="col">
+              <div style="text-align: center">
+                <ngb-rating [(rate)]="stars" max="5">
+                  <ng-template let-fill="fill">
+                    <span class="star" [class.filled]="fill === 100">&#9733;</span>
+                  </ng-template>
+                </ngb-rating>
+              </div>
+            </div>
+          </div>
+        </li>
+        <h4 style="text-align: center; margin-top: 15px">Zdjęcia paczki (opcjonalnie, max. 5 zdjęć)</h4>
+        <br>
+<!--        <div-->
+<!--          class="alert alert-danger justify-content-center"-->
+<!--          *ngIf="imagesCount >= 5"-->
+<!--          style="width: 80%; margin: 0 auto"-->
+<!--        >-->
+<!--          <p style="text-align: center">-->
+<!--            Osiągnięto limit zdjęć, usuń któreś ze zdjęć, aby móc dodać kolejne.-->
+<!--          </p>-->
+<!--        </div>-->
+        <div class="alert alert-danger"
+             *ngIf="imageUploadError"
+             style="width: 80%; margin: 0 auto">
+          <p style="text-align: center">
+            {{imageUploadError}}
+          </p>
+        </div>
+        <br>
+        <div class="form-group">
+          <li class="list-group-item d-flex flex-row" style="width: 100%; border-top-color: transparent">
+            <div *ngIf="currentImages.length > 0">
+              <h5 style="text-align: center">Aktualne zdjęcia</h5>
+              <ngx-gallery [options]="currentGalleryOptions" [images]="currentImages"></ngx-gallery>
+            </div>
+          </li>
+          <li style="border-top-color: transparent" class="list-group-item d-flex flex-row justify-content-center">
+            <input
+              type="file"
+              style="display: none"
+              id="photos"
+              class="form-control-file"
+              multiple
+              accept='image/*'
+              (change)="selectFiles($event)"
+            >
+            <span ngbTooltip="{{imagesCount >= 5 ? 'Osiągnięto limit 5 zdjęć. Usuń któreś ze zdjęć, aby dodać nowe.' : ''}}">
+              <input
+                class="btn btn-primary"
+                style="text-align: center; border-color: transparent"
+                type="button"
+                value="Dodaj zdjęcia"
+                [disabled]="imagesCount >= 5"
+                onclick="document.getElementById('photos').click();"
+              />
+            </span>
+          </li>
+          <li class="list-group-item d-flex flex-row" *ngIf="newAddedImages.length > 0">
+            <div>
+              <h5 style="text-align: center">Nowe zdjęcia</h5>
+              <ngx-gallery [options]="newGalleryOptions" [images]="newAddedImages"></ngx-gallery>
+            </div>
+          </li>
+          <li
+            class="list-group-item d-flex flex-row justify-content-center">
+            <span ngbTooltip="{{reviewForm.invalid ? 'Wypełnij wymagane pola' : ''}}">
+              <button
+                [disabled]="reviewForm.invalid"
+                class="btn btn-primary">
+                Edytuj recenzję
+              </button>
+            </span>
+          </li>
+        </div>
+      </ul>
+    </form>
+  </div>
+
+  <!--  <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">-->
+  <!--    <div class="row">-->
+  <!--      <div class="col"></div>-->
+  <!--      <div class="col-10" style="border: 1px solid black">-->
+  <!--        <h5 style="text-align: center">Edycja recenzji</h5>-->
+  <!--        <div formGroupName="location">-->
+  <!--          <div class="form-group">-->
+  <!--            <label for="name">Nazwa lokalu <span style="color: red">*</span></label>-->
+  <!--            <input-->
+  <!--              type="text"-->
+  <!--              id="name"-->
+  <!--              formControlName="name"-->
+  <!--              class="form-control"-->
+  <!--              [readOnly]="chooseExistingLocation"-->
+  <!--            />-->
+  <!--          </div>-->
+  <!--          <div formGroupName="address">-->
+  <!--            <div class="form-group">-->
+  <!--              <label for="street">Ulica <span style="color: red">*</span></label>-->
+  <!--              <input-->
+  <!--                type="text"-->
+  <!--                id="street"-->
+  <!--                formControlName="street"-->
+  <!--                class="form-control"-->
+  <!--                [readOnly]="chooseExistingLocation"-->
+  <!--              />-->
+  <!--            </div>-->
+  <!--            <div class="form-group">-->
+  <!--              <label for="buildingNo">Numer budynku <span style="color: red">*</span></label>-->
+  <!--              <input-->
+  <!--                type="text"-->
+  <!--                id="buildingNo"-->
+  <!--                formControlName="buildingNo"-->
+  <!--                class="form-control"-->
+  <!--                [readOnly]="chooseExistingLocation"-->
+  <!--              />-->
+  <!--            </div>-->
+  <!--            <div class="form-group">-->
+  <!--              <label for="city">Miasto <span style="color: red">*</span></label>-->
+  <!--              <input-->
+  <!--                type="text"-->
+  <!--                id="city"-->
+  <!--                formControlName="city"-->
+  <!--                class="form-control"-->
+  <!--                [readOnly]="chooseExistingLocation"-->
+  <!--              />-->
+  <!--            </div>-->
+  <!--          </div>-->
+  <!--        </div>-->
+  <!--        <div class="row d-flex justify-content-around">-->
+  <!--          <div class="col-xs-4">-->
+  <!--            <button-->
+  <!--              class="btn btn-primary"-->
+  <!--              type="button"-->
+  <!--              style="border-color: rgb(121, 208, 198)"-->
+  <!--              (click)="onChooseExisting()">-->
+  <!--              {{chooseExistingLocation ? 'Wprowadź nową lokację' : 'Wybierz lokalizację z listy'}}-->
+  <!--            </button>-->
+  <!--          </div>-->
+  <!--        </div>-->
+  <!--        &lt;!&ndash;      <div class="form-group" *ngIf="!chooseExistingLocation">&ndash;&gt;-->
+  <!--        &lt;!&ndash;        <button&ndash;&gt;-->
+  <!--        &lt;!&ndash;          class="btn btn-primary"&ndash;&gt;-->
+  <!--        &lt;!&ndash;          type="button"&ndash;&gt;-->
+  <!--        &lt;!&ndash;          (click)="onClear()">&ndash;&gt;-->
+  <!--        &lt;!&ndash;          Wyczyść&ndash;&gt;-->
+  <!--        &lt;!&ndash;        </button>&ndash;&gt;-->
+  <!--        &lt;!&ndash;      </div>&ndash;&gt;-->
+  <!--        <div class="form-group">-->
+  <!--          <select-->
+  <!--            name="locations"-->
+  <!--            id="locations"-->
+  <!--            class="selectpicker"-->
+  <!--            [(ngModel)]="chosenLocationId"-->
+  <!--            [ngModelOptions]="{standalone: true}"-->
+  <!--            (change)="onLocationChoose()"-->
+  <!--            *ngIf="chooseExistingLocation">-->
+  <!--            <option-->
+  <!--              [ngValue]="location.id"-->
+  <!--              *ngFor="let location of locations">-->
+  <!--              {{ location.name }}-->
+  <!--            </option>-->
+  <!--          </select>-->
+  <!--        </div>-->
+  <!--        <div class="form-group">-->
+  <!--          <h3 style="text-align: center">Informacje o paczce</h3>-->
+  <!--          <div class="row" style="text-align: center">-->
+  <!--            <div class="col">-->
+  <!--              <label for="standardPrice">Standardowa cena <span style="color: red">*</span></label>-->
+  <!--              <input-->
+  <!--                type="number"-->
+  <!--                id="standardPrice"-->
+  <!--                formControlName="standardPrice"-->
+  <!--                class="form-control"-->
+  <!--                (change)="onPriceFormatCheck($event)"-->
+  <!--              />-->
+  <!--            </div>-->
+  <!--            <div class="col">-->
+  <!--              <label for="discountPrice">Cena w TGTG <span style="color: red">*</span></label>-->
+  <!--              <input-->
+  <!--                type="number"-->
+  <!--                id="discountPrice"-->
+  <!--                formControlName="discountPrice"-->
+  <!--                class="form-control"-->
+  <!--              />-->
+  <!--            </div>-->
+  <!--          </div>-->
+  <!--        </div>-->
+  <!--        <div class="form-group">-->
+  <!--          <label for="pickupTime">Czas odbioru <span style="color: red">*</span></label>-->
+  <!--          <input-->
+  <!--            type="datetime-local"-->
+  <!--            id="pickupTime"-->
+  <!--            formControlName="pickupTime"-->
+  <!--            class="form-control"-->
+  <!--          />-->
+  <!--        </div>-->
+  <!--        <div class="form-group">-->
+  <!--          <label for="comment">Komentarz (opcjonalnie)</label>-->
+  <!--          <textarea-->
+  <!--            type="are"-->
+  <!--            id="comment"-->
+  <!--            formControlName="comment"-->
+  <!--            class="form-control"-->
+  <!--          ></textarea>-->
+  <!--        </div>-->
+  <!--        <h5 style="text-align: center">Ocena <span style="color: red">*</span></h5>-->
+  <!--        <div class="row">-->
+  <!--          <div class="col">-->
+  <!--            <div style="text-align: center">-->
+  <!--              <ngb-rating [(rate)]="stars" max="5">-->
+  <!--                <ng-template let-fill="fill">-->
+  <!--                  <span class="star" [class.filled]="fill === 100">&#9733;</span>-->
+  <!--                </ng-template>-->
+  <!--              </ngb-rating>-->
+  <!--            </div>-->
+  <!--          </div>-->
+  <!--        </div>-->
+  <!--        <hr>-->
+  <!--        <h4 style="text-align: center">Zdjęcia paczki (opcjonalnie)</h4>-->
+  <!--        <br>-->
+  <!--        <div class="form-group">-->
+  <!--          <input-->
+  <!--            type="file"-->
+  <!--            style="display: none"-->
+  <!--            id="photos"-->
+  <!--            class="form-control-file"-->
+  <!--            multiple-->
+  <!--            accept='image/*'-->
+  <!--            (change)="selectFiles($event)"-->
+  <!--          >-->
+  <!--          <input style="text-align: center" type="button" value="Dodaj"-->
+  <!--                 onclick="document.getElementById('photos').click();"/>-->
+  <!--          &lt;!&ndash;          <div>&ndash;&gt;-->
+  <!--          &lt;!&ndash;            <ngx-gallery [options]="galleryOptions" [images]="currentImages"></ngx-gallery>&ndash;&gt;-->
+  <!--          &lt;!&ndash;          </div>&ndash;&gt;-->
+  <!--          <br>-->
+  <!--          <div *ngIf="newAddedImages.length > 0">-->
+  <!--            <h5 style="text-align: center">Nowe zdjęcia</h5>-->
+  <!--            <ngx-gallery [options]="newGalleryOptions" [images]="newAddedImages"></ngx-gallery>-->
+  <!--          </div>-->
+
+  <!--          <div *ngIf="currentImages.length > 0">-->
+  <!--            <h5 style="text-align: center">Aktualne zdjęcia</h5>-->
+  <!--            <ngx-gallery style="width: 100%" [options]="currentGalleryOptions" [images]="currentImages"></ngx-gallery>-->
+  <!--          </div>-->
+  <!--        </div>-->
+  <!--        <div class="col"></div>-->
+  <!--      </div>-->
+  <!--      <div class="col">-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--    <div class="row d-flex justify-content-around">-->
+  <!--      <div class="col-xs-4">-->
+  <!--        <button-->
+  <!--          [disabled]="reviewForm.invalid"-->
+  <!--          class="btn btn-primary">-->
+  <!--          Edytuj recenzję-->
+  <!--        </button>-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--  </form>-->
+  <!--</div>-->

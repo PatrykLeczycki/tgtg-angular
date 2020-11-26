@@ -1,0 +1,67 @@
+.star {
+  font-size: 2.5rem;
+  color: #b0c4de;
+}
+.filled {
+  color: gold;
+}
+
+:focus {
+  outline: transparent thin dotted !important;
+}
+
+button {
+  background-color:rgb(121, 208, 198);
+  border-color: rgb(121, 208, 198);
+  color: black;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color:rgb(69, 173, 161);
+  border-color: rgb(121, 208, 198);
+  color: black;
+  font-weight: bold;
+}
+
+button {
+  background-color:rgb(69, 173, 161);
+  border-color: rgb(121, 208, 198);
+  color: black;
+  font-weight: bold;
+}
+
+.form-group {
+  padding: 0 0
+}
+
+.ng-select.auto-grow {
+  display: flex;
+}
+
+.ng-select-container {
+  min-width: 100px;
+  width: auto;
+}
+
+.ng-dropdown-panel {
+  width: auto;
+}
+
+.form-group {
+  margin-bottom: 0
+}
+
+.btn-primary.disabled, .btn-primary:disabled :not(#images) {
+  background-color:rgb(69, 173, 161);
+  border-color: rgb(121, 208, 198);
+  color: black;
+  font-weight: bold;
+  cursor: not-allowed;
+}
+
+.ngx-gallery-icon .ngx-gallery-icon-content {
+  color: red;
+  background-color: white;
+}
+

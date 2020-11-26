@@ -1,0 +1,25 @@
+.star {
+  font-size: 2rem;
+  color: #b0c4de;
+}
+.filled {
+  color: gold;
+}
+
+:focus {
+  outline: transparent thin dotted !important;
+}
+
+#map {
+  height: 400px;
+  width: 400px;
+}
+
+.panel-body i + p { /* Select links after font icons */
+  vertical-align: text-bottom;
+}
+
+agm-map {
+  height: 400px;
+  width: 500px
+}
