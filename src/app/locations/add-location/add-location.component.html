@@ -1,0 +1,99 @@
+<br>
+<div class="d-flex justify-content-around">
+  <div class="alert alert-danger" *ngIf="error">
+    <p>{{ error }}</p>
+  </div>
+
+  <div class="card pmd-card" style="width: 400px">
+    <!-- Card Header -->
+    <div class="card-header" style="display: inline-block; text-align: center">
+      <div class="row">
+        <div class="col">
+          <button
+            class="btn btn-primary"
+            style="float:left"
+            routerLink="/locations">
+            Powrót
+          </button>
+        </div>
+        <div class="col-8"><h4 class="card-title" style="float: left">Dodawanie lokalu</h4>
+        </div>
+        <!--        <div class="col-sm">-->
+        <!--        </div>-->
+      </div>
+    </div>
+
+    <form [formGroup]="locationForm" (ngSubmit)="onSubmit()">
+      <ul class="list-group pmd-list">
+        <div class="form-group">
+          <!--          <h3 style="text-align: center">Dane adresowe</h3>-->
+          <li class="list-group-item d-flex flex-row">
+            <label for="name" style="width: 40%; display: flex; align-items: center">Nazwa lokalu <span
+              style="color: red">*</span></label>
+            <input
+              type="text"
+              id="name"
+              formControlName="name"
+              class="form-control"
+              style="width: 60%"
+            />
+          </li>
+        </div>
+        <div formGroupName="address">
+          <div class="form-group">
+            <li class="list-group-item d-flex flex-row">
+              <label for="street" style="width: 40%; display: flex; align-items: center">Ulica <span
+                style="color: red">*</span></label>
+              <input
+                type="text"
+                id="street"
+                formControlName="street"
+                class="form-control"
+                style="width: 60%"
+              />
+            </li>
+          </div>
+          <div class="form-group">
+            <li class="list-group-item d-flex flex-row">
+              <label for="buildingNo" style="width: 40%; display: flex; align-items: center">Numer budynku <span
+                style="color: red">*</span></label>
+              <input
+                type="text"
+                id="buildingNo"
+                formControlName="buildingNo"
+                class="form-control"
+                style="width: 60%"
+              />
+            </li>
+          </div>
+          <div class="form-group">
+            <li class="list-group-item d-flex flex-row">
+              <label for="city" style="width: 40%; display: flex; align-items: center">Miasto <span
+                style="color: red">*</span></label>
+              <input
+                type="text"
+                id="city"
+                formControlName="city"
+                class="form-control"
+                style="width: 60%"
+              />
+            </li>
+          </div>
+        </div>
+        <div class="form-group">
+          <li
+            class="list-group-item d-flex flex-row justify-content-center"
+            style="border-top-color: transparent">
+            <span ngbTooltip="{{locationForm.invalid ? 'Wypełnij wymagane pola' : ''}}">
+              <button
+                [disabled]="locationForm.invalid"
+                class="btn btn-primary">
+                Dodaj lokal
+              </button>
+            </span>
+          </li>
+        </div>
+      </ul>
+    </form>
+  </div>
+</div>

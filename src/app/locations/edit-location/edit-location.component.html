@@ -1,0 +1,63 @@
+<br>
+<div class="d-flex justify-content-around">
+  <div class="alert alert-danger" *ngIf="error">
+    <p>{{ error }}</p>
+  </div>
+  <form [formGroup]="locationForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-12">
+        <h3 style="text-align: center">Edycja lokalu</h3>
+        <div class="form-group">
+          <label for="name">Nazwa <span style="color: red">*</span></label>
+          <input
+            type="text"
+            id="name"
+            formControlName="name"
+            class="form-control"
+          />
+        </div>
+        <div formGroupName="address">
+          <div class="form-group">
+            <label for="street">Ulica <span style="color: red">*</span></label>
+            <input
+              type="text"
+              id="street"
+              formControlName="street"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <label for="buildingNo">Numer budynku <span style="color: red">*</span></label>
+            <input
+              type="text"
+              id="buildingNo"
+              formControlName="buildingNo"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <label for="city">Miasto <span style="color: red">*</span></label>
+            <input
+              type="text"
+              id="city"
+              formControlName="city"
+              class="form-control"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row d-flex justify-content-around">
+      <div class="col-xs-4">
+        <span ngbTooltip="{{locationForm.invalid ? 'Wypełnij wymagane pola' : ''}}">
+          <button
+            [disabled]="locationForm.invalid"
+            class="btn btn-primary">
+            Edytuj lokal
+          </button>
+        </span>
+      </div>
+    </div>
+  </form>
+</div>
