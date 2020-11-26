@@ -1,0 +1,131 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+    </div>
+    <div class="col">
+      <button
+        class="btn btn-primary"
+        (click)="onToggleMap()"
+        style="display: block; margin: 15px auto 5px;">
+        {{displayLatest ? 'Pokaż wszystkie lokale' : 'Pokaż najnowsze lokale w miastach'}}</button>
+      <agm-map
+        [zoom]="5.5"
+        #map
+        [mapTypeId]="'terrain'"
+        [latitude]="52.065221"
+        [longitude]="19.252482"
+        style="height: 450px; width: 500px">
+        <agm-marker-cluster
+          imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclusterer/images/m">
+          <agm-marker
+            [latitude]="location.lat"
+            [longitude]="location.lng"
+            *ngFor="let location of displayedLocations;let i = index"
+            (markerClick)="showLocationDetails(i)"
+          >
+          </agm-marker>
+        </agm-marker-cluster>
+      </agm-map>
+    </div>
+    <div class="col-sm">
+    </div>
+  </div>
+  <div class="row" style="margin-top: 5px">
+    <div class="col"></div>
+    <div class="col">
+      <div class="row" style="width: 500px">
+        <div class="col" style="float: left">
+          <div [ngStyle]="{top: clickedLocation ? '20%' : '30%'}">
+
+            <div class="card pmd-card">
+              <p *ngIf="!clickedLocation" style="margin: 10px">
+                <i class="material-icons pmd-list-icon align-middle">location_on</i>
+                Kliknij w znacznik, aby uzyskać informacje o lokacji
+              </p>
+              <ul class="list-group pmd-list" *ngIf="clickedLocation">
+                <li class="list-group-item d-flex flex-row">
+                  <i class='fas fa-home' style='font-size:24px'></i>
+                  <span class="media-body">
+                    <span style="font-weight: bold; margin-left: 5px">Lokal: </span>
+                    {{clickedLocation.name}}
+                  </span>
+                </li>
+                <li class="list-group-item d-flex flex-row">
+                  <i class="material-icons pmd-list-icon align-middle">location_on</i>
+                  <span class="media-body">
+                  <span style="font-weight: bold; margin-left: 5px">Adres: </span>
+                    <br>
+                    {{clickedLocation.address.street}} {{clickedLocation.address.buildingNo}}, {{clickedLocation.address.city}}
+                  </span>
+                </li>
+                <li class="list-group-item d-flex flex-row">
+                  <i class='fas fa-star' style='font-size:24px'></i>
+                  <span class="media-body">
+                    <span style="font-weight: bold; margin-left: 5px">Ocena: </span>
+                    <span *ngIf="clickedLocation.rating > 0">
+                      {{clickedLocation.rating | number : '1.2-2'}}/5
+                    </span>
+                    <span *ngIf="clickedLocation.rating === 0">
+                      brak ocen
+                    </span>
+                    <ng-template #t let-fill="fill">
+                      <span class="star1" [class.full]="fill === 100">
+                        <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                      </span>
+                    </ng-template>
+                    <ngb-rating [(rate)]="clickedLocation.rating"
+                                [starTemplate]="t"
+                                [readonly]="true"
+                                [max]="5"
+                                *ngIf="clickedLocation.rating > 0">
+                    </ngb-rating>
+                  </span>
+                </li>
+                <li class="list-group-item d-flex flex-row">
+                  <button
+                    class="btn btn-primary"
+                    style="margin: 0 auto"
+                    routerLink="/locations/{{clickedLocation.id}}">Szczegóły
+                  </button>
+                  <button
+                    class="btn btn-primary"
+                    style="margin: 0 auto; margin-left: 5px"
+                    routerLink="/locations/edit/{{clickedLocation.id}}">Edycja
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col" style="float: right" *ngIf="clickedLocation">
+          <div [ngStyle]="{top: clickedLocation ? '20%' : '30%'}">
+            <div class="card pmd-card">
+              <ul class="list-group pmd-list" *ngIf="clickedLocation">
+                <li class="list-group-item d-flex flex-row" style="text-align: center">
+                  <span class="media-body">
+                    <span style="font-weight: bold; margin-left: 5px">Ostatnie recenzje</span>
+                  </span>
+                </li>
+                <li class="list-group-item d-flex flex-row justify-content-center" *ngIf="latestReviews.length < 1">
+                  brak
+                </li>
+                <li class="list-group-item d-flex flex-row" *ngFor="let review of latestReviews">
+                  <span class="media-body">
+                     <span>
+                       <a routerLink="/reviews/{{review.id}}">
+                         {{transformDate(review.pickupTime)}} - ocena: {{review.rating}}/5
+                       </a>
+                     </span>
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm"></div>
+  </div>
+</div>
+
+<img src="http://localhost:8080/files/387dcc24-6b65-4d99-af23-5b3324fcc1ad" alt="">
