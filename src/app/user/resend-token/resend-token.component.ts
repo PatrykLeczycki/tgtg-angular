@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../auth/auth.service';
-import {checkEmail} from '../../shared/check-email';
+import {checkEmail} from '../../shared/utils';
 
 @Component({
   selector: 'app-resend-token',
@@ -39,17 +39,5 @@ export class ResendTokenComponent implements OnInit {
 
   onEmailCheck(): void {
     this.invalidEmail = checkEmail(this.resendTokenForm);
-    // const errors = this.resendTokenForm.get('email').errors;
-    // if (errors) {
-    //   let invalid = false;
-    //   Object.keys(errors).forEach(key => {
-    //     if (key === 'email') {
-    //       invalid = true;
-    //     }
-    //   });
-    //   this.invalidEmail = invalid;
-    // } else {
-    //   this.invalidEmail = false;
-    // }
   }
 }

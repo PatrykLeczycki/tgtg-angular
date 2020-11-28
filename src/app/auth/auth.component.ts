@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable, Subscription} from 'rxjs';
 import {AuthService} from './auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {checkEmail} from '../shared/check-email';
+import {checkEmail} from '../shared/utils';
 
 @Component({
   selector: 'app-authentication',

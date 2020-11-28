@@ -1,11 +1,9 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ReviewService} from '../reviews/review/review.service';
 import {Review} from '../model/review.model';
 import {DatePipe} from '@angular/common';
-import {MdbTableDirective, MdbTablePaginationComponent} from 'angular-bootstrap-md';
 import {AuthService} from '../auth/auth.service';
 import {Subscription} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
@@ -22,8 +20,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(private reviewService: ReviewService,
               private datePipe: DatePipe,
-              private authService: AuthService,
-              private httpClient: HttpClient) {
+              private authService: AuthService) {
   }
 
   ngOnInit(): void {
@@ -33,11 +30,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.reviewService.getLatest(this.latestReviewsLimit)
       .subscribe(resData => {
         this.latestReviews = resData;
-      });
-
-    this.httpClient.get('http://pleczycki.pl/tgtg-spring/files')
-      .subscribe(res => {
-
       });
   }
 

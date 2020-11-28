@@ -13,3 +13,11 @@ export function checkEmail(form: FormGroup): boolean {
   }
   return false;
 }
+
+export function getApiUrl(): string {
+  return 'http://localhost:8080';
+}
+
+// export function getApiUrl(): string {
+//   return 'http://pleczycki.pl/tgtg-spring';
+// }

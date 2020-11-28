@@ -4,6 +4,9 @@ import {User} from '../user/user.model';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {catchError, tap} from 'rxjs/operators';
 import {Router} from '@angular/router';
+import {getApiUrl} from "../shared/utils";
+
+const API_URL = getApiUrl();
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
@@ -18,7 +21,7 @@ export class AuthService {
   signup(email: string, password: string): Observable<{ email: string, password: string }> {
     return this.http
       .post<{ email: string, password: string }>(
-        'http://pleczycki.pl/tgtg-spring/auth/register',
+        API_URL + '/auth/register',
         {
           email,
           password
@@ -29,7 +32,7 @@ export class AuthService {
   login(email: string, password: string): Observable<any> {
     return this.http
       .post(
-        'http://pleczycki.pl/tgtg-spring/auth/login',
+        API_URL + '/auth/login',
         {
           email,
           password,
@@ -108,7 +111,7 @@ export class AuthService {
   confirmAccount(userId: string, registrationToken: string) {
     return this.http
       .post(
-        'http://pleczycki.pl/tgtg-spring/auth/confirmAccount',
+        API_URL + '/auth/confirmAccount',
         {
           userId, registrationToken
         }
@@ -118,14 +121,14 @@ export class AuthService {
   resendConfirmationToken(email: string) {
     return this.http
       .post(
-        'http://pleczycki.pl/tgtg-spring/auth/resendConfirmationLink', email
+        API_URL + '/auth/resendConfirmationLink', email
       ).pipe(catchError(this.handleError));
   }
 
   retrievePasswordFirstStage(email: string) {
     return this.http
       .post(
-        'http://pleczycki.pl/tgtg-spring/auth/retrievePasswordFirst',
+        API_URL + '/auth/retrievePasswordFirst',
         {
           email
         }
@@ -135,7 +138,7 @@ export class AuthService {
   retrievePasswordSecondStage(password: string, userId: string, lostPasswordToken: string) {
     return this.http
       .post(
-        'http://pleczycki.pl/tgtg-spring/auth/retrievePasswordSecond',
+        API_URL + '/auth/retrievePasswordSecond',
         {
           password, userId, lostPasswordToken
         }
@@ -145,7 +148,7 @@ export class AuthService {
   changePassword(currentPassword: string, newPassword: string, userId: string) {
     return this.http
       .post(
-        'http://pleczycki.pl/tgtg-spring/auth/changePassword',
+        API_URL + '/auth/changePassword',
         {
           currentPassword, newPassword, userId
         }
