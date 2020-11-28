@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {checkEmail} from '../../shared/check-email';
+import {checkEmail} from '../../shared/utils';
 
 @Component({
   selector: 'app-lost-password',
