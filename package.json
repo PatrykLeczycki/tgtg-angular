@@ -41,6 +41,7 @@
     "jquery": "^3.5.1",
     "js-marker-clusterer": "^1.0.0",
     "mdbootstrap": "^4.19.1",
+    "moment": "^2.29.1",
     "ng-uikit-pro-standard": "^1.0.0",
     "ngx-bootstrap-icons": "^1.2.2",
     "ngx-gallery": "^5.10.0",

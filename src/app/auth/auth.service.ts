@@ -5,6 +5,7 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {catchError, tap} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {getApiUrl} from "../shared/utils";
+import * as moment from 'moment'
 
 const API_URL = getApiUrl();
 
@@ -155,7 +156,6 @@ export class AuthService {
       ).pipe(catchError(this.handleError));
   }
 
-
   private handleAuthentication(
     id: string,
     email: string,
@@ -163,7 +163,7 @@ export class AuthService {
     token: string,
     roles: string[]
   ): void {
-    const expirationDate = new Date(expiresIn * 1000);
+    const expirationDate = moment(new Date(expiresIn * 1000)).toDate();
     const user = new User(id, email, expirationDate, token, roles);
     this.user.next(user);
     localStorage.setItem('userData', JSON.stringify(user));

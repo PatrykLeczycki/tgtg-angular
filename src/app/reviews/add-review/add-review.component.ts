@@ -10,6 +10,10 @@ import {Observable, of} from 'rxjs';
 import {CanComponentDeactivate} from '../../shared/can-component-deactivate';
 import {UserReviewDatatableService} from '../../user/user-review-list/user-review-datatable.service';
 import {MapService} from '../../map/map.service';
+import {Review} from "../../model/review.model";
+
+import * as moment from 'moment';
+import 'moment/locale/pl';
 
 @Component({
   selector: 'app-add-review',
@@ -133,6 +137,7 @@ export class AddReviewComponent implements OnInit, CanComponentDeactivate {
       rating: this.stars,
     });
 
+    this.reviewForm.value.pickupTime = moment(this.reviewForm.value.pickupTime);
     const data: FormData = new FormData();
     if (this.selectedFiles) {
       for (let i = 0; i < this.selectedFiles.length; i++) {
@@ -169,8 +174,9 @@ export class AddReviewComponent implements OnInit, CanComponentDeactivate {
       this.reviewService
         .add(data)
         .subscribe(responseData => {
+          let review: Review = responseData;
           this.userReviewDatatableService.updateReviewInterfaces();
-          this.router.navigate(['/reviews', Number(responseData['message'])]);
+          this.router.navigate(['/reviews', review.id]);
         }, error => {
           this.submitted = false;
         });
