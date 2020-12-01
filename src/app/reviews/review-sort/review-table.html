@@ -1,5 +1,5 @@
 <form>
-  <div class="form-group form-inline">
+  <div class="form-group form-inline justify-content-center">
     Filtry: <input
     class="form-control ml-2"
     type="text"
@@ -13,18 +13,7 @@
       placeholder="Miasto"
       [(ngModel)]="service.searchCityTerm"/>
     <span class="ml-3" *ngIf="service.loading$ | async">Loading...</span>
-    <!--    <span class="ml-3" *ngIf="service.loading$ | async">Loading...</span>-->
   </div>
-  <!--  <div class="form-group form-inline">-->
-  <!--    <input-->
-  <!--      class="form-control ml-2"-->
-  <!--      type="text"-->
-  <!--      name="searchCityTerm"-->
-  <!--      placeholder="Miasto"-->
-  <!--      [(ngModel)]="service.searchCityTerm"/>-->
-  <!--    <span class="ml-3" *ngIf="service.loading$ | async">Loading...</span>-->
-  <!--  </div>-->
-
   <table class="table table-striped" style="text-align: center">
     <thead>
     <tr>
@@ -32,7 +21,7 @@
       <th scope="col" sortable="locationName" (sort)="onSort($event)">Nazwa lokacji</th>
       <th scope="col" sortable="locationCity" (sort)="onSort($event)">Miasto</th>
       <th scope="col" sortable="rating" (sort)="onSort($event)">Ocena</th>
-      <th scope="col"></th>
+      <th scope="col" style="text-align: center">Akcje</th>
     </tr>
     </thead>
     <tbody>
@@ -63,17 +52,14 @@
     </tr>
     </tbody>
   </table>
-
   <div class="d-flex justify-content-between p-2">
     <ngb-pagination
       [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
     </ngb-pagination>
-
     <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="service.pageSize">
       <option [ngValue]="2">2 recenzje na stronę</option>
       <option [ngValue]="4">4 recenzje na stronę</option>
       <option [ngValue]="6">6 recenzji na stronę</option>
     </select>
   </div>
-
 </form>

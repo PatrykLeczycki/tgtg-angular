@@ -1,5 +1,5 @@
 import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from '@angular/common/http';
-import {Observable, of} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import {AuthService} from './auth.service';
 import {catchError, exhaustMap, take, tap} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
@@ -26,13 +26,10 @@ export class AuthInterceptorService implements HttpInterceptor {
         }
       });
 
-      // return next.handle(modifiedReq);
       return next.handle(modifiedReq).pipe(
         tap(event => {
-          console.log(event);
           if (event instanceof HttpResponse) {
             if (event.body && event.body.success) {
-              console.log('Success!');
             }
           }
         }),
@@ -43,14 +40,8 @@ export class AuthInterceptorService implements HttpInterceptor {
             console.log(next);
             console.log(this.router);
             console.log(this.route);
-            // this.authService.user = null;
-            // this.router.navigate(['/auth'], {
-            //   queryParams: {
-            //     redirectUrl: state.url
-            //   }
-            // });
           }
-          return of(err);
+          return throwError(err);
         }));
     }));
   }

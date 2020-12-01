@@ -1,11 +1,10 @@
 import {DatePipe, DecimalPipe} from '@angular/common';
-import {Component, Input, QueryList, ViewChildren} from '@angular/core';
+import {Component, QueryList, ViewChildren} from '@angular/core';
 import {Observable} from 'rxjs';
 
 import {ReviewDatatableService} from './review-datatable.service';
 import {NgbdSortableHeader, SortEvent} from './review-sortable.directive';
 import {ReviewInterface} from '../../model/review-interface';
-import {Review} from '../../model/review.model';
 
 @Component({
   selector: 'app-review-table',
