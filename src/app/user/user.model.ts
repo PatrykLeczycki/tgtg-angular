@@ -1,6 +1,3 @@
-import {Review} from '../model/review.model';
-import {ReviewInterface} from '../model/review-interface';
-
 export class User {
   constructor(
     public id: string,
@@ -8,6 +5,7 @@ export class User {
     private expiresIn: Date,
     private tokenId: string,
     private roles: string[]) {
+    this.expiresIn = new Date(Date.UTC(this.expiresIn.getFullYear(), this.expiresIn.getMonth(), this.expiresIn.getDate(), this.expiresIn.getHours(), this.expiresIn.getMinutes()));
   }
 
   locationBlacklistIds: number[] = [];

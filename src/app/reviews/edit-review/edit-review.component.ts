@@ -7,10 +7,9 @@ import {LocationService} from '../../locations/location.service';
 import {Review} from '../../model/review.model';
 import {NgxGalleryAnimation, NgxGalleryImage, NgxGalleryImageSize, NgxGalleryOptions} from 'ngx-gallery-9';
 import {Observable, of} from 'rxjs';
-import {delay} from 'rxjs/operators';
-import {NgSelectConfig} from '@ng-select/ng-select';
 import {MapService} from '../../map/map.service';
 import {CanComponentDeactivate} from '../../shared/can-component-deactivate';
+import * as moment from 'moment'
 
 @Component({
   selector: 'app-edit-review',
@@ -103,7 +102,7 @@ export class EditReviewComponent implements OnInit, CanComponentDeactivate {
           'standardPrice': this.review.standardPrice,
           'discountPrice': this.review.discountPrice,
           'rating': this.review.rating,
-          'pickupTime': this.review.pickupTime,
+          'pickupTime': moment(this.review.pickupTime).format('yyyy-MM-DDTHH:mm:ss'),
           'location': {
             'address': {
               'buildingNo': this.review.location.address.buildingNo,
@@ -253,7 +252,8 @@ export class EditReviewComponent implements OnInit, CanComponentDeactivate {
         this.reviewService
           .edit(data, this.id)
           .subscribe(responseData => {
-            this.router.navigate(['/reviews', Number(responseData['message'])]);
+            let review: Review = responseData;
+            this.router.navigate(['/reviews', review.id]);
           }, error => {
             console.log(error);
           });
@@ -268,7 +268,8 @@ export class EditReviewComponent implements OnInit, CanComponentDeactivate {
       this.reviewService
         .edit(data, this.id)
         .subscribe(responseData => {
-          this.router.navigate(['/reviews', Number(responseData['message'])]);
+          let review: Review = responseData;
+          this.router.navigate(['/reviews', review.id]);
         }, error => {
           console.log(error);
         });
