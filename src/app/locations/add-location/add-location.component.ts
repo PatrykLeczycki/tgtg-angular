@@ -14,7 +14,6 @@ import {Router} from '@angular/router';
 })
 export class AddLocationComponent implements OnInit, CanComponentDeactivate {
 
-  // locations: Location[] = [];
   locationForm: FormGroup;
   error: string = null;
   submitted = false;
@@ -38,14 +37,15 @@ export class AddLocationComponent implements OnInit, CanComponentDeactivate {
   onSubmit() {
     this.submitted = true;
 
+    const location = this.locationForm.value;
+
     const addressString =
-      this.locationForm.value.address.street + ' ' +
-      this.locationForm.value.address.buildingNo + ' ' +
-      this.locationForm.value.address.city;
+      location.address.street + ' ' +
+      location.address.buildingNo + ' ' +
+      location.address.city;
 
     const coords = this.mapService.getCoordinates(addressString);
 
-    const location = this.locationForm.value;
 
     coords.then(place => {
       location.address.latitude = place.geometry.location.lat();
@@ -54,11 +54,8 @@ export class AddLocationComponent implements OnInit, CanComponentDeactivate {
       this.locationService
         .add(location)
         .subscribe(responseData => {
-          this.locationService.getAll()
-            .subscribe(response => {
-              // this.locations = response;
-            });
-          this.router.navigate(['/locations', Number(responseData['message'])]);
+          let location: Location = responseData;
+          this.router.navigate(['/locations', location.id]);
         }, error => {
           this.submitted = false;
           console.log(error);

@@ -44,6 +44,7 @@
           style="display: flex; align-items: center">
           <i class='fas fa-star' style='font-size:24px'></i>
           <span class="media-body">
+            <span style="font-weight: bold; margin-left: 5px">Ocena: </span>
             <span
               style="font-weight: bold; margin-left: 5px"
               *ngIf="location.rating > 0">
@@ -52,7 +53,6 @@
             <span *ngIf="location.rating === 0">
               brak ocen
             </span>
-            <span style="font-weight: bold; margin-left: 5px">Ocena: </span>
           </span>
         </li>
         <li class="list-group-item d-flex flex-row" *ngIf="counter > 0">
