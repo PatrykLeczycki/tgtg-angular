@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
+import {Observable, throwError} from 'rxjs';
 import {getApiUrl} from "../../shared/utils";
+import {catchError} from "rxjs/operators";
 
 const API_URL = getApiUrl();
 
@@ -22,7 +23,8 @@ export class ReviewService {
   }
 
   get(id: number): Observable<any> {
-    return this.http.get(API_URL + '/review/' + id);
+    return this.http.get(API_URL + '/review/get/' + id)
+      .pipe(catchError(this.handleError));
   }
 
   getLatest(limit: number): Observable<any> {
@@ -31,13 +33,13 @@ export class ReviewService {
     });
   }
 
-  add(data: FormData): Observable<object> {
+  add(data: FormData): Observable<any> {
     return this.http.post(
       API_URL + '/review/add', data
     );
   }
 
-  edit(data: FormData, id: number): Observable<object> {
+  edit(data: FormData, id: number): Observable<any> {
     return this.http.post(
       API_URL + '/review/edit/' + id, data
     );
@@ -49,5 +51,18 @@ export class ReviewService {
 
   getLatestLocationReviews(id: number): Observable<any> {
     return this.http.get(API_URL + '/review/location/' + id + '/latest');
+  }
+
+  private handleError(errorRes: HttpErrorResponse): Observable<never> {
+    let errorMessage = 'Wystąpiły problemy z serwerem. Prosimy odczekać chwilę i spróbować ponownie.';
+    if (!errorRes.error || !errorRes.error.message) {
+      return throwError(errorMessage);
+    }
+    switch (errorRes.error.message) {
+      case 'Review not found':
+        errorMessage = 'Nie znaleziono podanej recenzji';
+        break;
+    }
+    return throwError(errorMessage);
   }
 }

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Location} from '../../model/location.model';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {LocationService} from '../location.service';
@@ -30,13 +30,33 @@ export class LocationComponent implements OnInit {
           .subscribe(countResponse => {
             this.counter = countResponse;
           });
+      }, error => {
+        if (error === 'Nie znaleziono podanego lokalu') {
+          this.router.navigate(['/locations'], {
+            relativeTo: this.route,
+            state: {
+              error: error
+            }
+          });
+        }
       }
     );
 
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.id = Number(params.get('id'));
       this.locationService.get(this.id).subscribe(
-        resData => this.location = resData
+        resData => {
+          this.location = resData
+        }, error => {
+          if (error === 'Nie znaleziono podanego lokalu') {
+            this.router.navigate(['/locations'], {
+              relativeTo: this.route,
+              state: {
+                error: error
+              }
+            });
+          }
+        }
       );
     });
   }

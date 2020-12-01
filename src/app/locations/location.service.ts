@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {Observable, throwError} from 'rxjs';
 import {Location} from '../model/location.model';
 import {getApiUrl} from "../shared/utils";
+import {catchError} from "rxjs/operators";
 
 const API_URL = getApiUrl();
 
@@ -14,7 +15,7 @@ export class LocationService {
   constructor(private httpClient: HttpClient) {
   }
 
-  add(rawValue: Location): Observable<object> {
+  add(rawValue: Location): Observable<any> {
     return this.httpClient.post(
       API_URL + '/location/add', rawValue
     );
@@ -25,7 +26,8 @@ export class LocationService {
   }
 
   get(id: number): Observable<any> {
-    return this.httpClient.get(API_URL + '/location/' + id);
+    return this.httpClient.get(API_URL + '/location/get/' + id)
+      .pipe(catchError(this.handleError));
   }
 
   addToBlacklist(userId: string, locationId: string): Observable<any> {
@@ -54,5 +56,18 @@ export class LocationService {
 
   edit(location: Location, id: number): Observable<any> {
     return this.httpClient.post(API_URL + '/location/edit/' + id, location);
+  }
+
+  private handleError(errorRes: HttpErrorResponse): Observable<never> {
+    let errorMessage = 'Wystąpiły problemy z serwerem. Prosimy odczekać chwilę i spróbować ponownie.';
+    if (!errorRes.error || !errorRes.error.message) {
+      return throwError(errorMessage);
+    }
+    switch (errorRes.error.message) {
+      case 'Location not found':
+        errorMessage = 'Nie znaleziono podanego lokalu';
+        break;
+    }
+    return throwError(errorMessage);
   }
 }
