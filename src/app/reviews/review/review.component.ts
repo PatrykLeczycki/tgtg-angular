@@ -5,7 +5,6 @@ import {ReviewService} from './review.service';
 import {DatePipe} from '@angular/common';
 import {NgxGalleryAnimation, NgxGalleryComponent, NgxGalleryImage, NgxGalleryImageSize, NgxGalleryOptions} from 'ngx-gallery-9';
 import {LocationInterface} from '../../shared/maplocation';
-import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-review',
@@ -27,8 +26,7 @@ export class ReviewComponent implements OnInit {
   constructor(private router: Router,
               private route: ActivatedRoute,
               private reviewService: ReviewService,
-              private datePipe: DatePipe,
-              private sanitizer: DomSanitizer) {
+              private datePipe: DatePipe) {
   }
 
   ngOnInit(): void {
@@ -45,13 +43,33 @@ export class ReviewComponent implements OnInit {
           label: String(photo.id)
         }));
         this.mapHidden = this.galleryImages.length > 0;
+      }, error => {
+        if(error === 'Nie znaleziono podanej recenzji') {
+          this.router.navigate(['/reviews'], {
+            relativeTo: this.route,
+            state: {
+              error: error
+            }
+          });
+        }
       }
     );
 
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.id = Number(params.get('id'));
       this.reviewService.get(this.id).subscribe(
-        resData => this.review = resData
+        resData => {
+          this.review = resData
+        }, error => {
+          if(error === 'Nie znaleziono podanej recenzji') {
+            this.router.navigate(['/reviews'], {
+              relativeTo: this.route,
+              state: {
+                error: error
+              }
+            });
+          }
+        }
       );
     });
 

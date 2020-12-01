@@ -20,6 +20,7 @@ export class LocationListComponent {
 
   locations$: Observable<LocationInterface[]>;
   total$: Observable<number>;
+  error: string;
 
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
 
@@ -28,12 +29,19 @@ export class LocationListComponent {
               public authService: AuthService,
               private locationService: LocationService,
               private userLocationBlacklistService: UserLocationBlacklistService,
-              private datePipe: DatePipe) {
+              private datePipe: DatePipe,
+              private router: Router) {
     if (authService.user.value) {
       userLocationBlacklistService.updateLocationInterfaces();
     }
     this.locations$ = service.locations$;
     this.total$ = service.total$;
+
+    if(this.router.getCurrentNavigation()
+      && this.router.getCurrentNavigation().extras.state
+      && this.router.getCurrentNavigation().extras.state.error === 'Nie znaleziono podanego lokalu') {
+      this.error = this.router.getCurrentNavigation().extras.state.error;
+    }
   }
 
   onSort({column, direction}: SortEvent): void {

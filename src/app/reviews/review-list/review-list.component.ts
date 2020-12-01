@@ -1,10 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Review} from '../../model/review.model';
-import {ReviewService} from '../review/review.service';
 import {DatePipe} from '@angular/common';
-import {ReviewDatatableService} from '../review-sort/review-datatable.service';
-import {ReviewInterface} from '../../model/review-interface';
-import {map} from 'rxjs/operators';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-review-list',
@@ -13,17 +9,17 @@ import {map} from 'rxjs/operators';
 })
 export class ReviewListComponent implements OnInit {
 
-  // reviews: Review[] = [];
-  background = 'transparent';
-
-  constructor(private datePipe: DatePipe) {
+  error: string;
+  constructor(private datePipe: DatePipe,
+              private router: Router) {
+    if(this.router.getCurrentNavigation()
+      && this.router.getCurrentNavigation().extras.state
+      && this.router.getCurrentNavigation().extras.state.error === 'Nie znaleziono podanej recenzji') {
+      this.error = this.router.getCurrentNavigation().extras.state.error;
+    }
   }
 
   ngOnInit(): void {
-    // this.reviewService.getAll()
-    //   .subscribe(response => {
-    //     this.reviews = response;
-    //   });
   }
 
   transformDate(date: Date): string {
