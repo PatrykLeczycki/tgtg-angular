@@ -30,3 +30,6 @@
   width: 400px;
 }
 
+agm-map /deep/ .agm-map-container-inner {
+  border: 1px solid black;
+}
