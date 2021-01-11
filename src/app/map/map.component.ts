@@ -1,4 +1,4 @@
-import {Component, Input, NgZone, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, NgZone, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {AgmMap, GoogleMapsAPIWrapper, MapsAPILoader} from '@agm/core';
 import {FormGroup} from '@angular/forms';
 import {Location} from '../model/location.model';
@@ -28,7 +28,8 @@ interface LocationInterface {
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.css']
+  styleUrls: ['./map.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class MapComponent implements OnInit {
