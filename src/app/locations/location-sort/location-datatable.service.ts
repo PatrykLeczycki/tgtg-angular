@@ -80,19 +80,19 @@ export class LocationDatatableService {
             rating: location.rating
           });
         });
-    });
-    this._search$.pipe(
-      tap(() => this._loading$.next(true)),
-      debounceTime(200),
-      switchMap(() => this._search()),
-      delay(200),
-      tap(() => this._loading$.next(false))
-    ).subscribe(result => {
-      this._locations$.next(result.locations);
-      this._total$.next(result.total);
-    });
+      this._search$.pipe(
+        tap(() => this._loading$.next(true)),
+        debounceTime(200),
+        switchMap(() => this._search()),
+        delay(200),
+        tap(() => this._loading$.next(false))
+      ).subscribe(result => {
+        this._locations$.next(result.locations);
+        this._total$.next(result.total);
+      });
 
-    this._search$.next();
+      this._search$.next();
+    });
   }
 
   get locations$() {
