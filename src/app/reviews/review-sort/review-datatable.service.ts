@@ -74,19 +74,18 @@ export class ReviewDatatableService {
             pickupTime: review.pickupTime
           });
         });
+      this._search$.pipe(
+        tap(() => this._loading$.next(true)),
+        debounceTime(200),
+        switchMap(() => this._search()),
+        delay(200),
+        tap(() => this._loading$.next(false))
+      ).subscribe(result => {
+        this._reviews$.next(result.reviews);
+        this._total$.next(result.total);
+      });
+      this._search$.next();
     });
-    this._search$.pipe(
-      tap(() => this._loading$.next(true)),
-      debounceTime(200),
-      switchMap(() => this._search()),
-      delay(200),
-      tap(() => this._loading$.next(false))
-    ).subscribe(result => {
-      this._reviews$.next(result.reviews);
-      this._total$.next(result.total);
-    });
-
-    this._search$.next();
   }
 
   get reviews$() {
