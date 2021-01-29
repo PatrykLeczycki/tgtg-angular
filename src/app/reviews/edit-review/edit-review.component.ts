@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {Location} from '../../model/location.model';
-import {FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ReviewService} from '../review/review.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {LocationService} from '../../locations/location.service';
@@ -41,7 +41,7 @@ export class EditReviewComponent implements OnInit, CanComponentDeactivate {
   currentImages: NgxGalleryImage[] = [];
   newAddedImages: NgxGalleryImage[] = [];
   deletedNewImagesIds: number[] = [];
-  deletedImagesDatabaseIds: number[] = [];
+  deletedImagesDatabaseIds: string[] = [];
   selectedFiles: FileList;
   selectedFile = null;
   changeImage = false;
@@ -254,8 +254,6 @@ export class EditReviewComponent implements OnInit, CanComponentDeactivate {
           .subscribe(responseData => {
             let review: Review = responseData;
             this.router.navigate(['/reviews', review.id]);
-          }, error => {
-            console.log(error);
           });
       });
     } else {
@@ -270,8 +268,6 @@ export class EditReviewComponent implements OnInit, CanComponentDeactivate {
         .subscribe(responseData => {
           let review: Review = responseData;
           this.router.navigate(['/reviews', review.id]);
-        }, error => {
-          console.log(error);
         });
     }
   }
@@ -341,10 +337,9 @@ export class EditReviewComponent implements OnInit, CanComponentDeactivate {
   }
 
   deleteCurrentImage(event, index): void {
-    this.deletedNewImagesIds.push(index);
     const label = this.currentImages[index].label;
     if (label) {
-      this.deletedImagesDatabaseIds.push(Number(label));
+      this.deletedImagesDatabaseIds.push(label);
     }
     this.currentImages.splice(index, 1);
     this.imagesCount--;
