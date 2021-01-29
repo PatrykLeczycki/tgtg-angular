@@ -17,7 +17,7 @@
             <button
               class="btn btn-primary"
               style="float:right"
-              routerLink="/locations/edit/{{location.id}}">
+              routerLink="/locations/edit/{{location?.id}}">
               Edycja
             </button>
           </div>
@@ -55,13 +55,13 @@
             </span>
           </span>
         </li>
-        <li class="list-group-item d-flex flex-row" *ngIf="counter > 0">
-          <i class='fa fa-thumbs-down' style='font-size:24px'></i>
-          <span class="media-body">
-            <span style="font-weight: bold; margin-left: 5px">Wystąpienia na czarnej liście: </span>
-            {{counter}}
-          </span>
-        </li>
+<!--        <li class="list-group-item d-flex flex-row" *ngIf="counter > 0">-->
+<!--          <i class='fa fa-thumbs-down' style='font-size:24px'></i>-->
+<!--          <span class="media-body">-->
+<!--            <span style="font-weight: bold; margin-left: 5px">Wystąpienia na czarnej liście: </span>-->
+<!--            {{counter}}-->
+<!--          </span>-->
+<!--        </li>-->
         <li class="list-group-item d-flex flex-row">
           <app-map [locationData]="location"></app-map>
         </li>

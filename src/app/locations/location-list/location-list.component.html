@@ -25,7 +25,7 @@
             name="searchCityTerm"
             placeholder="Miasto"
             [(ngModel)]="service.searchCityTerm"/>
-          <span class="ml-3" *ngIf="service.loading$ | async">Loading...</span>
+          <span class="ml-3" *ngIf="service.loading$ | async">Ładowanie...</span>
         </div>
         <div class="row">
           <div class="col"></div>
@@ -72,22 +72,22 @@
                       routerLink="/locations/{{location.id}}">
                 Szczegóły
               </button>
-              <button
-                class="btn btn-danger"
-                style="border-color: rgb(39, 87, 79)"
-                (click)="onBlacklist(location.id)"
-                *ngIf="authService.user.value && !authService.user.value.locationBlacklistIds.includes(location.id)"
-              >
-                Na czarną listę
-              </button>
-              <button
-                class="btn btn-danger"
-                style="border-color: rgb(39, 87, 79)"
-                (click)="deleteFromBlacklist(location.id)"
-                *ngIf="authService.user.value && authService.user.value.locationBlacklistIds.includes(location.id)"
-              >
-                Usuń z czarnej listy
-              </button>
+<!--              <button-->
+<!--                class="btn btn-danger"-->
+<!--                style="border-color: rgb(39, 87, 79)"-->
+<!--                (click)="onBlacklist(location.id)"-->
+<!--                *ngIf="authService.user.value && !authService.user.value.locationBlacklistIds.includes(location.id)"-->
+<!--              >-->
+<!--                Na czarną listę-->
+<!--              </button>-->
+<!--              <button-->
+<!--                class="btn btn-danger"-->
+<!--                style="border-color: rgb(39, 87, 79)"-->
+<!--                (click)="deleteFromBlacklist(location.id)"-->
+<!--                *ngIf="authService.user.value && authService.user.value.locationBlacklistIds.includes(location.id)"-->
+<!--              >-->
+<!--                Usuń z czarnej listy-->
+<!--              </button>-->
             </td>
           </tr>
           </tbody>
