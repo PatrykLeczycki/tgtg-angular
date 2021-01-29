@@ -115,4 +115,8 @@ export class ReviewComponent implements OnInit {
   onClick() {
     this.mapHidden = !this.mapHidden;
   }
+
+  onEditChoose() {
+    this.router.navigate(['/reviews/edit/', this.id]);
+  }
 }

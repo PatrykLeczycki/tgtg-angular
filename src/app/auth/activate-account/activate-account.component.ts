@@ -25,8 +25,6 @@ export class ActivateAccountComponent implements OnInit {
           }
         );
       }, error => {
-        console.log('error');
-        console.log(error);
         this.router.navigate(['/auth'], {
             queryParams: {
               invalidConfirmationToken: true
