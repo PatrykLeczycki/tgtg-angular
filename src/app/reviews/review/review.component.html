@@ -8,6 +8,7 @@
             <button
               class="btn btn-primary"
               style="float:left"
+              type="button"
               routerLink="/reviews">
               Powrót
             </button>
@@ -18,7 +19,8 @@
             <button
               class="btn btn-primary"
               style="float:right"
-              routerLink="/reviews/edit/{{review.id}}">
+              type="button"
+              (click)="onEditChoose()">
               Edycja
             </button>
           </div>
@@ -30,35 +32,35 @@
           <i class='fas fa-home' style='font-size:24px'></i>
           <span class="media-body">
             <span style="font-weight: bold; margin-left: 5px">Lokal: </span>
-            {{review.location.name}}
+            {{review?.location.name}}
           </span>
         </li>
         <li class="list-group-item d-flex flex-row">
           <i class="material-icons pmd-list-icon align-middle">location_on</i>
           <span class="media-body">
             <span style="font-weight: bold; margin-left: 5px">Adres: </span>
-            {{review.location.address.street}} {{review.location.address.buildingNo}}, {{review.location.address.city}}
+            {{review?.location.address.street}} {{review?.location.address.buildingNo}}, {{review?.location.address.city}}
           </span>
         </li>
         <li class="list-group-item d-flex flex-row">
           <i class='fas fa-clock' style='font-size:24px'></i>
           <span class="media-body">
             <span style="font-weight: bold; margin-left: 5px">Czas odbioru: </span>
-            godz. {{ transformDate(review.pickupTime)}}
+            godz. {{ transformDate(review?.pickupTime)}}
           </span>
         </li>
         <li class="list-group-item d-flex flex-row">
           <i class='fas fa-coins' style='font-size:24px'></i>
           <span class="media-body">
             <span style="font-weight: bold; margin-left: 5px">Standardowa cena: </span>
-            {{review.standardPrice}} zł
+            {{review?.standardPrice}} zł
           </span>
         </li>
         <li class="list-group-item d-flex flex-row">
           <i class='fas fa-coins' style='font-size:24px'></i>
           <span class="media-body">
             <span style="font-weight: bold; margin-left: 5px">Cena z TGTG: </span>
-            {{review.discountPrice}} zł
+            {{review?.discountPrice}} zł
           </span>
         </li>
         <li class="list-group-item d-flex flex-row">
@@ -66,40 +68,40 @@
           <span class="media-body">
             <span style="font-weight: bold; margin-left: 5px">Ocena:</span>
             <br>
-            <ngb-rating [rate]="review.rating" [readonly]="true" max="5">
+            <ngb-rating [rate]="review?.rating" [readonly]="true" max="5">
               <ng-template let-fill="fill">
                 <span class="star" [class.filled]="fill === 100">&#9733;</span>
               </ng-template>
             </ngb-rating>
           </span>
         </li>
-        <li class="list-group-item d-flex flex-row" *ngIf="review.comment && review.comment !== ''">
+        <li class="list-group-item d-flex flex-row" *ngIf="review?.comment && review?.comment !== ''">
           <i class='fas fa-comment' style='font-size:24px'></i>
           <span class="media-body">
             <span style="font-weight: bold; margin-left: 5px">Komentarz: </span>
             <br>
             <br>
-            {{review.comment}}
+            {{review?.comment}}
           </span>
         </li>
         <li class="list-group-item d-flex flex-row" *ngIf="mapHidden">
-          <a (click)="onClick()">
+          <a>
             <i class="fa fa-caret-down" style="font-size:24px"></i>
             <span class="media-body">
-            <span style="font-weight: bold; margin-left: 5px">Pokaż mapę</span>
+            <span style="font-weight: bold; margin-left: 5px" (click)="onClick()">Pokaż mapę</span>
           </span>
           </a>
         </li>
         <li class="list-group-item d-flex flex-row" *ngIf="!mapHidden" style="border-bottom-color: transparent">
-          <a (click)="onClick()">
+          <a>
             <i class="fa fa-caret-up" style="font-size:24px"></i>
             <span class="media-body">
-            <span style="font-weight: bold; margin-left: 5px">Schowaj mapę</span>
+            <span style="font-weight: bold; margin-left: 5px" (click)="onClick()">Schowaj mapę</span>
           </span>
           </a>
         </li>
-        <li class="list-group-item d-flex flex-row" *ngIf="!mapHidden" (click)="onClick()">
-          <app-map  [locationData]="review.location"></app-map>
+        <li class="list-group-item d-flex flex-row" *ngIf="!mapHidden && review">
+          <app-map [locationData]="review.location"></app-map>
         </li>
         <li class="list-group-item d-flex flex-row" style="border-bottom-color: transparent" *ngIf="galleryImages.length > 0">
           <i class="material-icons">photo_library</i>

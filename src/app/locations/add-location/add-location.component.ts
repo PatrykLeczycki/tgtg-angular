@@ -58,7 +58,6 @@ export class AddLocationComponent implements OnInit, CanComponentDeactivate {
           this.router.navigate(['/locations', location.id]);
         }, error => {
           this.submitted = false;
-          console.log(error);
         });
     });
   }

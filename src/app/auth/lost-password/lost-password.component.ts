@@ -56,7 +56,6 @@ export class LostPasswordComponent implements OnInit {
         this.router.navigate(['/retrievePassword']);
       }, error => {
         this.emailSent = true;
-        console.log(error);
         this.error = error;
       });
     } else if (this.secondStage) {
@@ -69,7 +68,6 @@ export class LostPasswordComponent implements OnInit {
           }
         });
       }, error => {
-        console.log(error);
         this.error = error;
         this.router.navigate(['/auth'], {
             queryParams: {

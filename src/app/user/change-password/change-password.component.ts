@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../auth/auth.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-change-password',
@@ -38,7 +38,6 @@ export class ChangePasswordComponent implements OnInit {
         this.authService.logout(true);
       }, error => {
         this.error = error;
-        console.log(error);
       });
   }
 
