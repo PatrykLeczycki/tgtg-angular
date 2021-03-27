@@ -46,4 +46,4 @@ b) Visit http://pleczycki.pl/tgtg-polska
 To add new location or write a review, user must be registered and logged in. To skip this process you can anter provided credentials:
 
 * **E-mail address:** admin@admin
-* **Password:*** admin123
+* **Password:** admin123
