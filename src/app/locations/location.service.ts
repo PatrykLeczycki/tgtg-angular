@@ -15,10 +15,10 @@ export class LocationService {
   constructor(private httpClient: HttpClient) {
   }
 
-  add(rawValue: Location): Observable<any> {
+  add(data: FormData): Observable<any> {
     return this.httpClient.post(
-      API_URL + '/location/add', rawValue
-    );
+      API_URL + '/location/add', data
+    ).pipe(catchError(this.handleError));
   }
 
   getAll(): Observable<any> {
@@ -80,6 +80,9 @@ export class LocationService {
       return throwError(errorMessage);
     }
     switch (errorRes.error.message) {
+      case 'Location already exists':
+        errorMessage = 'Istnieje już lokal o podanej nazwie i adresie';
+        break;
       case 'Location not found':
         errorMessage = 'Nie znaleziono podanego lokalu';
         break;

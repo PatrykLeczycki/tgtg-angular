@@ -6,6 +6,7 @@ import {CanComponentDeactivate} from '../../shared/can-component-deactivate';
 import {Observable} from 'rxjs';
 import {MapService} from '../../map/map.service';
 import {Router} from '@angular/router';
+import {AuthService} from "../../auth/auth.service";
 
 @Component({
   selector: 'app-add-location',
@@ -19,6 +20,7 @@ export class AddLocationComponent implements OnInit, CanComponentDeactivate {
   submitted = false;
 
   constructor(private locationService: LocationService,
+              private authService: AuthService,
               private mapService: MapService,
               private router: Router) {
   }
@@ -35,8 +37,13 @@ export class AddLocationComponent implements OnInit, CanComponentDeactivate {
   }
 
   onSubmit() {
-    this.submitted = true;
+    const data: FormData = new FormData();
 
+    data.append('id', new Blob([JSON.stringify(this.authService.user.value.id)], {
+      type: 'application/json'
+    }));
+
+    this.submitted = true;
     const location = this.locationForm.value;
 
     const addressString =
@@ -51,12 +58,17 @@ export class AddLocationComponent implements OnInit, CanComponentDeactivate {
       location.address.latitude = place.geometry.location.lat();
       location.address.longitude = place.geometry.location.lng();
 
+      data.append('location', new Blob([JSON.stringify(location)], {
+        type: 'application/json'
+      }));
+
       this.locationService
-        .add(location)
+        .add(data)
         .subscribe(responseData => {
           let location: Location = responseData;
           this.router.navigate(['/locations', location.id]);
         }, error => {
+          this.error = error;
           this.submitted = false;
         });
     });

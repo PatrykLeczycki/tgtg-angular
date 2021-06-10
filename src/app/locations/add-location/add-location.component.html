@@ -1,11 +1,13 @@
 <br>
 <div class="d-flex justify-content-around">
-  <div class="alert alert-danger" *ngIf="error">
-    <p>{{ error }}</p>
-  </div>
-
   <div class="card pmd-card" style="width: 400px">
-    <!-- Card Header -->
+    <div *ngIf="error">
+      <p
+        class="alert alert-danger"
+        style="text-align: center">
+        {{error}}
+      </p>
+    </div>
     <div class="card-header" style="display: inline-block; text-align: center">
       <div class="row">
         <div class="col">
@@ -18,15 +20,12 @@
         </div>
         <div class="col-8"><h4 class="card-title" style="float: left">Dodawanie lokalu</h4>
         </div>
-        <!--        <div class="col-sm">-->
-        <!--        </div>-->
       </div>
     </div>
 
     <form [formGroup]="locationForm" (ngSubmit)="onSubmit()">
       <ul class="list-group pmd-list">
         <div class="form-group">
-          <!--          <h3 style="text-align: center">Dane adresowe</h3>-->
           <li class="list-group-item d-flex flex-row">
             <label for="name" style="width: 40%; display: flex; align-items: center">Nazwa lokalu <span
               style="color: red">*</span></label>
