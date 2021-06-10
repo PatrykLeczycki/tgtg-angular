@@ -29,14 +29,14 @@
           <i class='fas fa-home' style='font-size:24px'></i>
           <span class="media-body">
             <span style="font-weight: bold; margin-left: 5px">Lokal: </span>
-            {{location.name}}
+            {{location?.name}}
           </span>
         </li>
         <li class="list-group-item d-flex flex-row">
           <i class="material-icons pmd-list-icon align-middle">location_on</i>
           <span class="media-body">
             <span style="font-weight: bold; margin-left: 5px">Adres: </span>
-            {{location.address.street}} {{location.address.buildingNo}}, {{location.address.city}}
+            {{location?.address.street}} {{location?.address.buildingNo}}, {{location?.address.city}}
           </span>
         </li>
         <li
@@ -47,22 +47,15 @@
             <span style="font-weight: bold; margin-left: 5px">Ocena: </span>
             <span
               style="font-weight: bold; margin-left: 5px"
-              *ngIf="location.rating > 0">
-              {{location.rating | number : '1.2-2'}}/5
+              *ngIf="location?.rating > 0">
+              {{location?.rating | number : '1.2-2'}}/5
             </span>
-            <span *ngIf="location.rating === 0">
+            <span *ngIf="location?.rating === 0">
               brak ocen
             </span>
           </span>
         </li>
-<!--        <li class="list-group-item d-flex flex-row" *ngIf="counter > 0">-->
-<!--          <i class='fa fa-thumbs-down' style='font-size:24px'></i>-->
-<!--          <span class="media-body">-->
-<!--            <span style="font-weight: bold; margin-left: 5px">Wystąpienia na czarnej liście: </span>-->
-<!--            {{counter}}-->
-<!--          </span>-->
-<!--        </li>-->
-        <li class="list-group-item d-flex flex-row">
+        <li class="list-group-item d-flex flex-row" *ngIf="location">
           <app-map [locationData]="location"></app-map>
         </li>
       </ul>
