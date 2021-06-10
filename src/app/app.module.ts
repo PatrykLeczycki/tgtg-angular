@@ -28,6 +28,8 @@ import {CheckboxModule, NavbarModule, WavesModule} from 'angular-bootstrap-md';
 import {ReviewTableComponent} from './reviews/review-sort/review-table';
 import {NgbdSortableHeader} from './reviews/review-sort/review-sortable.directive';
 import { UserReviewListComponent } from './user/user-review-list/user-review-list.component';
+import {UserLocationListComponent} from './user/user-location-list/user-location-list.component';
+
 import {CanDeactivateGuardService} from './shared/can-component-deactivate';
 import { BlacklistComponent } from './blacklist/blacklist.component';
 import { LostPasswordComponent } from './auth/lost-password/lost-password.component';
@@ -64,6 +66,7 @@ const icons = {
     ReviewTableComponent,
     NgbdSortableHeader,
     UserReviewListComponent,
+    UserLocationListComponent,
     BlacklistComponent,
     LostPasswordComponent,
     ActivateAccountComponent,

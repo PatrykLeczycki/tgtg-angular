@@ -21,6 +21,7 @@ import {CompleteMapComponent} from './complete-map/complete-map.component';
 import {EditLocationComponent} from './locations/edit-location/edit-location.component';
 import {LatestReviewsListComponent} from './reviews/latest-reviews-list/latest-reviews-list.component';
 import {ResendTokenComponent} from './user/resend-token/resend-token.component';
+import {UserLocationListComponent} from "./user/user-location-list/user-location-list.component";
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent, pathMatch: 'full'},
@@ -35,6 +36,7 @@ const appRoutes: Routes = [
   {path: 'locations/edit/:id', component: EditLocationComponent, canActivate: [AuthGuardService], canDeactivate: [CanDeactivateGuardService]},
   {path: 'locations/:id', component: LocationComponent},
   {path: 'user/reviews', component: UserReviewListComponent, canActivate: [AuthGuardService]},
+  {path: 'user/locations', component: UserLocationListComponent, canActivate: [AuthGuardService]},
   {path: 'user/blacklist', component: UserLocationBlacklistComponent, canActivate: [AuthGuardService]},
   {path: 'blacklist', component: BlacklistComponent, pathMatch: 'full'},
   {path: 'auth', component: AuthComponent},
@@ -46,7 +48,7 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(appRoutes, {useHash: true})],
+  imports: [RouterModule.forRoot(appRoutes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

@@ -25,6 +25,10 @@ export class LocationService {
     return this.httpClient.get(API_URL + '/location/all');
   }
 
+  getAllByUserId(id: number): Observable<any> {
+    return this.httpClient.get(API_URL + '/location/all/user/' + id);
+  }
+
   get(id: number): Observable<any> {
     return this.httpClient.get(API_URL + '/location/get/' + id)
       .pipe(catchError(this.handleError));
