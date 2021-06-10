@@ -1,4 +1,4 @@
-import {Component, QueryList, ViewChildren} from '@angular/core';
+import {Component, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {ReviewService} from '../../reviews/review/review.service';
 import {Observable} from 'rxjs';
 import {ReviewInterface} from '../../model/review-interface';
@@ -13,12 +13,13 @@ import {AuthService} from '../../auth/auth.service';
   styleUrls: ['./user-review-list.component.css'],
   providers: [UserReviewDatatableService]
 })
-export class UserReviewListComponent {
+export class UserReviewListComponent implements OnInit {
 
   userReviews$: Observable<ReviewInterface[]>;
   total$: Observable<number>;
 
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
+  reviewDeleted: boolean;
 
   constructor(private reviewService: ReviewService,
               public datatableService: UserReviewDatatableService,
@@ -29,7 +30,6 @@ export class UserReviewListComponent {
   }
 
   onSort({column, direction}: SortEvent) {
-    // resetting other headers
     this.headers.forEach(header => {
       if (header.sortable !== column) {
         header.direction = '';
@@ -43,14 +43,18 @@ export class UserReviewListComponent {
     return this.datePipe.transform(date, 'HH:mm dd.MM.yyyy');
   }
 
-  onDelete(id: number) {
+  onDelete(reviewId: number) {
+    if (confirm("Czy na pewno chcesz usunąć wskazaną recenzję?")) {
+      const userId = this.authService.user.value.id;
 
-    const userId = this.authService.user.value.id;
+      this.reviewService.delete(reviewId, userId).subscribe(response => {
+        this.reviewDeleted = true;
+        this.datatableService.updateReviewInterfaces();
+      });
+    }
+  }
 
-    this.reviewService.delete(id).subscribe(response => {
-
-    }, error => {
-
-    });
+  ngOnInit(): void {
+    this.reviewDeleted = false;
   }
 }

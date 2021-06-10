@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {getApiUrl} from "../../shared/utils";
 import {catchError} from "rxjs/operators";
@@ -45,8 +45,17 @@ export class ReviewService {
     );
   }
 
-  delete(id: number) {
-    return this.http.delete(API_URL + '/review/delete/' + id);
+  delete(reviewId: number, userId: string) {
+
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      body: userId
+    }
+
+    return this.http.delete(API_URL + '/review/delete/' + reviewId, options)
+      .pipe(catchError(this.handleError));
   }
 
   getLatestLocationReviews(id: number): Observable<any> {

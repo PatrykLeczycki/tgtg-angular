@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {Location} from '../model/location.model';
 import {getApiUrl} from "../shared/utils";
@@ -62,6 +62,18 @@ export class LocationService {
     return this.httpClient.post(API_URL + '/location/edit/' + id, location);
   }
 
+  delete(locationId: number, userId: string) {
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      body: userId
+    }
+
+    return this.httpClient.delete(API_URL + '/location/delete/' + locationId, options)
+      .pipe(catchError(this.handleError));
+  }
+
   private handleError(errorRes: HttpErrorResponse): Observable<never> {
     let errorMessage = 'Wystąpiły problemy z serwerem. Prosimy odczekać chwilę i spróbować ponownie.';
     if (!errorRes.error || !errorRes.error.message) {
@@ -70,6 +82,9 @@ export class LocationService {
     switch (errorRes.error.message) {
       case 'Location not found':
         errorMessage = 'Nie znaleziono podanego lokalu';
+        break;
+      case 'Location contains reviews':
+        errorMessage = 'Nie można usunąć lokalu, ponieważ posiada on przypisane recenzje.';
         break;
     }
     return throwError(errorMessage);

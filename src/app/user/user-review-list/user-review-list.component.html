@@ -6,7 +6,17 @@
     </div>
     <div class="col-12">
       <form>
-        <div class="form-group form-inline">
+        <div class="row">
+          <div class="col"></div>
+          <div class="col">
+            <p
+              class="alert alert-success"
+              style="text-align: center"
+              *ngIf="reviewDeleted">Pomyślnie usunięto recenzję</p>
+          </div>
+          <div class="col"></div>
+        </div>
+        <div class="form-group form-inline justify-content-center">
           Filtry: <input
           class="form-control ml-2"
           type="text"
@@ -21,7 +31,6 @@
             [(ngModel)]="datatableService.searchCityTerm"/>
           <span class="ml-3" *ngIf="datatableService.loading$ | async">Ładowanie...</span>
         </div>
-
         <table class="table table-striped" style="text-align: center">
           <thead>
           <tr>

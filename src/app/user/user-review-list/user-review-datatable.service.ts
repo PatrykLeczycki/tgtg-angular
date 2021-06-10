@@ -74,6 +74,7 @@ export class UserReviewDatatableService {
           pickupTime: review.pickupTime
         });
       });
+      this._search$.next();
     });
   }
 
@@ -155,15 +156,11 @@ export class UserReviewDatatableService {
   private _search(): Observable<SearchResult> {
     const {sortColumn, sortDirection, pageSize, page, searchTerm, searchCityTerm} = this._state;
 
-    // 1. sort
     let reviews = sort(this.reviewInterfaces, sortColumn, sortDirection);
-    // 2. filter
     reviews = reviews.filter(review => matchesLocationName(review, searchTerm, this.pipe));
-    // const total = reviews.length;
-    // 2.1. filter cities
     reviews = reviews.filter(review => matchesCity(review, searchCityTerm, this.pipe));
+
     const total = reviews.length;
-    // 3. paginate
     reviews = reviews.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
 
     return of({reviews, total});
